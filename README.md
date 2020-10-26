@@ -12,11 +12,11 @@ __Что у меня получилось:__
 
 :memo:__Показания к применению:__:memo:
 
-- Скачать и установить [autohotkey.com](https://www.autohotkey.com)
+- 1. Скачать и установить [autohotkey.com](https://www.autohotkey.com)
 
-- Скачать репозиторий (Code > Download Zip)
+- 2. Скачать репозиторий (Code > Download Zip)
 
-- Запустить "Genshi AHK Flex.ahk"
+- 3. Запустить "Genshi AHK Flex.ahk"
 
 :musical_keyboard:__Горячие клавиши:__:musical_keyboard:
 - F1 - Карта
