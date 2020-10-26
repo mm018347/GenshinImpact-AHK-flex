@@ -7,7 +7,7 @@
 
 Показания к применению:
 
-- Скачать и установить AHK [autohotkey.com](https://www.autohotkey.com)
+- Скачать и установить [autohotkey.com](https://www.autohotkey.com)
 
 - Скачать репозиторий (зеленая кнопка Code > Download Zip)
 
