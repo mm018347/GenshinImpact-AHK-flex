@@ -14,7 +14,7 @@ __Что у меня получилось:__
 
 1. Скачать и установить [autohotkey.com](https://www.autohotkey.com)
 
-2. Скачать репозиторий (Code > Download Zip)
+2. Скачать репозиторий (:wheelchair:Code > Download Zip:wheelchair:)
 
 3. Запустить "Genshi AHK Flex.ahk"
 
