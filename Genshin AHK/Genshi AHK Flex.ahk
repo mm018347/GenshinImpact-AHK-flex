@@ -7,6 +7,12 @@
  ;		. Отключить С'ЖАй кастсцены, если есть ветка в реестре
  ;		. Рапидфаер
  ;		. Ведьмачье чутье
+if not A_IsAdmin
+{
+   Run *RunAs "%A_ScriptFullPath%"
+   sleep 100
+   ExitApp
+}
 ;===============================дерективы
 #NoEnv
 SendMode Input
