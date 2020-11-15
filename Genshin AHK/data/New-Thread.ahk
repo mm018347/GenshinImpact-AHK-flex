@@ -1,4 +1,10 @@
-﻿#NoTrayIcon
+if not A_IsAdmin
+{
+   Run *RunAs "%A_ScriptFullPath%"
+   sleep 100
+   ExitApp
+}
+#NoTrayIcon
 
 #NoEnv
 SendMode Input
