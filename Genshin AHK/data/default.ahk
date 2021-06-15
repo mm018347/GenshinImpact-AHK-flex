@@ -1,0 +1,58 @@
+﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+; #Warn  ; Enable warnings to assist with detecting common errors.
+SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
+SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
+
+
+def_config_go= 	;подготовить переменную
+(
+[Binds]
+key_animcancel=V
+key_map=F1
+key_overlay=F2
+key_autowalk=F3
+key_fastlyt=F
+key_skipNPS=Z
+key_bhop=Space
+key_vi4er_sens=X
+key_autoswim=N
+[Setings]
+Checkbox1map=1
+Checkbox1overlay=1
+Checkbox1autowalk=1
+Checkbox1fastlyt=1
+Checkbox1skipNPS=1
+Checkbox1autoswim=1
+Checkbox1vi4ersens=1
+Checkbox1animcancel=1
+Checkbox1bhop=1
+
+metodVvoda=3
+;Выбор режима ввода 1 - SendInput, 2 - SendPlay, 3 - WinApi
+
+showtooltipVvoba=1
+;Отображать Tooltip подсказки вверху при выборе макроса нумпад клавиатурой, 1 - да 0 - нет
+
+BrauzerCheck=0
+;Выбор браузера для запуска карты: 0 - Браузер по умолчанию, 1 - указать нужный браузер ниже
+
+BrauzerPick="C:\Users\Nagibskiy\AppData\Local\Programs\Opera GX\launcher.exe"
+;Указать путь к браузеру(кавычки не обязательно) Пример: firefox.exe, chrome.exe, opera.exe, browser.exe для установленных браузеров, для портативных абсолютный путь "C:\Users\Nagibskiy\Desktop\GoogleChromePortable\GoogleChromePortable.exe"
+
+GameExe=ahk_class UnityWndClass
+;Исполняемый файл, класс, имя окна или ПИД для взаимодействия с окном, класс лучше так как работает на любом регионе, если сломалось то можно попробывать ahk_exe GenshinImpact.exe
+
+map=1
+;Выбор интерактивной карты 1 - Mihoyo(Официальная карта михуё), 2 - Genshin-impact-map(Самая первая карта), 3 - Mapgenie.io(Платная карта), 4 - Yuanshen.site(Китайская карта)
+
+ONregreadDir=1
+;Считать путь к игре с реестра автоматически 1 - Да, 0 - Указать путь вручную ниже
+
+DirGame=C:\
+;Указать путь к игре вручную
+)
+FileDelete, genConfig.ini
+FileAppend, %def_config_go%, genConfig.ini
+MsgBox Ok
+
+
