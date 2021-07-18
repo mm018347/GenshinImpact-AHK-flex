@@ -1,1 +1,2 @@
-* .ahk  linguist-language = Java 
+*.fxh linguist-language=Autohotkey
+*.fx linguist-language=Autohotkey
