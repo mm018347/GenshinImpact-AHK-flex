@@ -1,4 +1,37 @@
-﻿;===============================дерективы
+﻿; ==============================Genshin AHK by Kramar1337==================
+; AHK
+; F1 - Карта
+; F2 - Оверлей
+; F3 - Автоходьба
+; F - Фастлут
+; Z - Скип диалогов
+; X - Ведьмачье чутье (дабл клик вкл, сингл клик выкл)
+; N - Плавание
+; Space - Банихоп
+; Left - Пролистать оверлей
+; Right - Пролистать оверлей
+; End - Завершить работу скрипта
+; V - Macro Key
+; Numpad 0 - Отключить макро
+; Numpad 1 - Стрельба на Amber по легиту но нужно быть в движении на +W
+; Numpad 2 - Стрельба на Fischl по легиту но нужно быть в движении на +W
+; Numpad 3 - Xiangling DragonStrike
+; Numpad 4 - Fischl и Amber рейдж +W
+; Numpad 5 - Venti Ganyu MachineGun
+; Numpad 6 - Klee Сombo
+; Numpad 7 - Diluc+Beidou DragonStrike
+; Numpad 8 - Noelle DragonStrike
+; Numpad 9 - Eula DragonStrike
+
+; Python
+; Tab + ~(тильт или Ё) - Обновить список мелодий
+; Tab + 1 2 3 4 5 6 7 8 9 0 - Воспроизвести мелодию на лире ветров
+; Tab + Space - Остановить воспроизведение
+
+; ReShade
+; Home - Открыть ReShade меню
+; Insert - Включить/отключить ReShade
+;===============================дерективы
 WinName:= "Genshi AHK Flex v4 by Kramar1337"
 #NoEnv
 SendMode Input
@@ -249,7 +282,7 @@ Gui, 1: Add, CheckBox, vCheckbox0animcancel x16 y208 w13 h18 Checked%Checkbox1an
 Gui, 1: Add, Edit, x40 y232 w61 h21 +Disabled, Space
 Gui, 1: Add, Text, x104 y232 w40 h20, Bhop
 Gui, 1: Add, CheckBox, vCheckbox0bhop x16 y232 w13 h18 Checked%Checkbox1bhop%
-Gui, 1: Add, CheckBox, vCheckbox0bhopDelay x140 y232 w60 h18 Checked%Checkbox1bhopDelay%, > 250ms
+Gui, 1: Add, CheckBox, vCheckbox0bhopDelay x140 y232 w60 h18 Checked%Checkbox1bhopDelay%, > 200ms
 Gui, 1: Add, Picture, x208 y16 w252 h256 +BackgroundTrans, data\page1fish.png
 Gui, 1: Tab, 2 	;================настройки
 if GlLanguage
@@ -465,7 +498,6 @@ AntiVACHashChanger:="fghfh3534gjdgdfgfj6867jhmbdsq4123asddfgdfgaszxxcasdf423dfgh
 
 
 
-
 1ReshadeRun:
 Gui, 1: Submit, NoHide
 Gui, 1: Cancel
@@ -618,11 +650,11 @@ IfWinActive, %gameexe1337%		;ahk_exe GenshinImpact.exe
 {
 if Checkbox1bhopDelay
 {
-Sleep 230
+Sleep 180
 }
 Else
 {
-Sleep 1
+Sleep 50
 }
 Loop
 {
@@ -832,7 +864,7 @@ jopa8:=false
 jopa9:=false
 jopa10:=false
 if showtooltipVvoba
-ToolTip, Klee Charge Attack, 0, 0
+ToolTip, Xiangling Dragonstrick, 0, 0
 Return
 ;===============================кли 2 Сombo
 Numpad6::
@@ -1050,23 +1082,24 @@ Ivar++
 }
 }
 
-if jopa3 							;кли Charge Attack
+if jopa3 							;сян лин драгонстрайк
 {
 IfWinActive, %gameexe1337%
 {
-sleep 1
-Loop
-{
-    GetKeyState, 2SpaceVar2, %key_animcancel%, P
-    If 2SpaceVar2 = U
-        break
-multisendinput("LButton", " Down", "LButton", " Down", "", "", "0x0002", "")
-; Sendplay, {Blind}{LButton Down}
-sleep 210
-multisendinput("LButton", " Up", "LButton", " Up", "", "", "0x0002", "0x0004")
-; Sendplay, {Blind}{LButton Up}
-sleep 500
-}
+		Click down
+		Sleep 1
+		Click up
+		Sleep 175			;180 норм
+		Send {LShift down}
+		Sleep 20
+		Send {LShift up}
+		Send {Space down}
+		Sleep 1
+		Send {Space up}
+		Sleep 25
+		Click down
+		Sleep 25
+		Click up
 }
 }
 
