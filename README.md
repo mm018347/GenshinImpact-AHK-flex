@@ -4,6 +4,11 @@ AHK скрипт для Genshin Impact
 
 ![hippo](https://media.giphy.com/media/xArjRR54nHdxJn8EG8/giphy.gif)
 
+<details>
+<summary>Click here</summary>
+123
+</details>
+
 __Что по функционалу:__
 
 - Бинд на интерактивную карту
