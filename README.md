@@ -30,6 +30,7 @@ __Возможности:__
 :memo:__Показания к применению:__:memo:
 
 1. Скачать и установить [autohotkey.com](https://www.autohotkey.com)
+"Custom installation" => "Unicode 64" => All checkbox => "Install"
 
 2. Скачать репозиторий (Code > [Download Zip:wheelchair:](https://github.com/Kramar1337/GenshinImpact-AHK-flex/archive/main.zip))
 
@@ -111,6 +112,10 @@ CTRL-ALT-Numpad0 - Запустить ярлык GenshAHK.lnk
 ```
 <details>
 <summary>===Последние изменения</summary>
+Изменения: 12.08.2021
+
+ - Изменено содержимое оверлея
+
 Изменения: 10.08.2021
  
 - Не работает автопуть с реестра, на релизе путь в одном месте в реестре, через год в другом, автопуть взял тут "UninstallString"
@@ -133,6 +138,10 @@ CTRL-ALT-Numpad0 - Запустить ярлык GenshAHK.lnk
 
 <details>
 <summary>===Список изменений за все время</summary>
+Изменения: 12.08.2021
+
+ - Изменено содержимое оверлея
+
 Изменения: 10.08.2021
  
 - Не работает автопуть с реестра, на релизе путь в одном месте в реестре, через год в другом, автопуть взял тут "UninstallString"
