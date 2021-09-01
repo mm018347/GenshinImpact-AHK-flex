@@ -39,7 +39,7 @@ __Требования к правильной работе скрипта:__
 1. Скачать и установить [Autohotkey.com](https://www.autohotkey.com/download/ahk-install.exe)
 
   "Custom installation" => "Unicode 64" => All checkboxes => "Install"
-![hippo](https://media.giphy.com/media/eHuepkw9xn5LaWfWhp/giphy.gif)
+![hippo](https://media.giphy.com/media/LerrohpjasApOHH9G1/giphy.gif)
 
 2. Скачать репозиторий (Code > [Download Zip👌](https://github.com/Kramar1337/GenshinImpact-AHK-flex/archive/main.zip))
 
