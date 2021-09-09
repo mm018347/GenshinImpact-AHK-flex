@@ -71,9 +71,23 @@ Birch Cedar Fir Cuihua Pine Sandy tree
 Бамбук Отоги Клен Аралия Юмэмиру
 Bamboo Otogi Maple Aralia Yumemiru
 
-
 Добавить интерсепшн
 
+
+
+
+
+
+
+
+Изменения: 09.09.2021
+ - Скрыть надпись в тултипе рыбалочки
+
+Изменения: 08.09.2021
+ - Оверлей 4 стр, добавлен Тома
+ - Оверлей 5 стр
+ - Фикс скипа диалогов(они там что за моими скриптами следят? год все работало и вдруг отвал)
+ - Еще 1 фикс рыбалки(3й по счету)
 
 Изменения: 03.09.2021
  - Челы полоску с рыбалкой передвинули чи шо
@@ -203,7 +217,8 @@ IniRead, OttenokFis, data\genConfig.ini, Fish, OttenokFis
 X1Fis := round(A_ScreenWidth * .37109)
 Y1Fis := round(A_ScreenHeight * .0625)
 X2Fis := round(A_ScreenWidth * .63281)
-Y2Fis := round(A_ScreenHeight * .11805)
+Y2Fis := round(A_ScreenHeight * .16805)
+; MsgBox %Y2Fis%
 ; OptimizationFis = 1 			;оптимизация рыбалки
 IniRead, OptimizationFis, data\genConfig.ini, Fish, OptimizationFis
 
@@ -681,8 +696,9 @@ Gui, 1: Show
 ;ломается mousemove из за окна окно1337
 
 ;===============================Переменные
-xSkip:=A_ScreenWidth*.7328
-ySkip:=A_ScreenHeight*.7465
+xSkip:=round(A_ScreenWidth*.7328)
+ySkip:=round(A_ScreenHeight*.7256)
+; 7465 старые значения ySkip
 var0ov:=1 ;оверлей обозначить переменную
 ;===============================Выбор карты
 if (Map2toggle == 1)
@@ -2530,7 +2546,6 @@ Return
 metka-2-kli1:
   SetTimer, metka-2-kli2-start, off
   Pereklu4atelFis = 0
-  Tooltip Auto fishing: OFF,0,0,2
   sleep 200
   Tooltip,,0,0,2
 Return
@@ -2566,7 +2581,7 @@ DoublePress:
 Return
 
 
-
+;================================================рыбалочка начало петли
 metka-2-kli2-start:
 Pereklu4atelFis = 1
 while Pereklu4atelFis
