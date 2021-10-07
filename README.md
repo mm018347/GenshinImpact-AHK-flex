@@ -1,7 +1,9 @@
 # Genshi AHK Flex v5.1
 
 AHK скрипт для Genshin Impact. [Wiki](https://github.com/Kramar1337/GenshinImpact-AHK-flex/wiki)
+
 Ps. 65MB скачивает долго
+
 ![hippo](https://media.giphy.com/media/m5NjNK20jwcY3JviE4/giphy.gif)
 
 __Что по функционалу:__
