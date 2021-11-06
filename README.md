@@ -1,4 +1,4 @@
-# Genshi AHK Flex v5.1
+# Genshi AHK Flex v5.2
 
 AHK скрипт для Genshin Impact.
 
@@ -104,7 +104,7 @@ F3 - Автоходьба
 F - Фастлут
 Z - Скип диалогов
 X - Авторыбалка (дабл клик вкл, сингл клик выкл)
-N - Таймер
+N - Таймер (дабл клик вкл, сингл клик выкл) (-popupwindow)
 Space - Банихоп
 Left - Пролистать оверлей
 Right - Пролистать оверлей
@@ -114,13 +114,13 @@ V - Macro Key
 Numpad 0 - Включить/отключить банихоп
 Numpad 1 - Стрельба на Amber по легиту но нужно быть в движении на +W
 Numpad 2 - Стрельба на Fischl по легиту но нужно быть в движении на +W
-Numpad 3 - Xiangling DragonStrike ?
-Numpad 4 - Fischl и Amber рейдж +W
-Numpad 5 - Venti Ganyu Yoimiya MachineGun
+Numpad 3 - Yoimiya N1RR стоять на месте(38 стрел)
+Numpad 4 - Ganyu Venti Yoimiya Amber Fischl Aloy Tartaglia *Diona *Sara
+Numpad 5 - MachineGun: Ganyu Venti Yoimiya
 Numpad 6 - Klee Сombo
-Numpad 7 - Diluc+Beidou DragonStrike
-Numpad 8 - Noelle DragonStrike
-Numpad 9 - Eula DragonStrike
+Numpad 7 - Diluc DragonStrike(Ручной)
+Numpad 8 - Hu Tao 9N2CJ
+Numpad 9 - Hu Tao 9H1CJ
 Numpad + - Klee
 
 Python
@@ -139,6 +139,29 @@ CTRL-ALT-Numpad0 - Запустить ярлык GenshAHK.lnk
 
 <details>
 <summary>==Список изменений==</summary>
+
+Изменения: 05.11.2021
+
+ - Numpad 8 - Hu Tao 9N2CJ(2 нормал => отмена прыжком, 9-10 тычек, хитлаг удлиняет пиро инфузию до 10 сек)
+ - Numpad 9 - Hu Tao 9H1CJ(удержание => отмена прыжком, 9 тычек)	
+ - Оверлей с инфой стр 5 ап оружия и Тома
+ - Секретная технология создания правильных значков без "лесенок"
+
+Изменения: 02.11.2021
+ - Часики(таймер на боссов) стали лучше (дабл клик вкл, сингл клик выкл) вешает часики поверх экрана в (-popupwindow) режиме игры, тикает 4 мин и 5 и закрываются 
+
+Изменения: 28.10.2021
+ - Yoimiya N1RR на WinApi и Sendinput быстрее чем на SendPlay и AHI
+ - Numpad 7 - Diluc DragonStrike, лучше работает, терь только ручной режим(делать удар в полете самому)
+
+Изменения: 24.10.2021
+ - Yoimiya N1RR вместо сянлин драгонстрайк, Sendinput быстрее WinApi
+ - Запрос админ прав для сендплей
+ - Мелкие исправления
+
+Изменения: 15.10.2021
+ - В оверлей добавлен Горо и Итто(4 стр)
+ - Исправления GUI
 
 Изменения: 06.10.2021
 
