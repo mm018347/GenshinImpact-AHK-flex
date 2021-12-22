@@ -125,8 +125,8 @@ Numpad 0 - Включить/отключить банихоп
 Numpad 1 - Стрельба на Amber по легиту но нужно быть в движении на +W
 Numpad 2 - Стрельба на Fischl по легиту но нужно быть в движении на +W
 Numpad 3 - Yoimiya N1RR стоять на месте(38 стрел)
-Numpad 4 - Ganyu Venti Yoimiya Amber Fischl Aloy Tartaglia *Diona *Sara
-Numpad 5 - MachineGun: Ganyu Venti Yoimiya
+Numpad 4 - Ganyu Venti Yoimiya Gorou Amber Fischl Aloy Tartaglia *Diona *Sara
+Numpad 5 - MachineGun: Ganyu Venti Yoimiya Gorou
 Numpad 6 - Legit лучники если кикает с сервера
 Numpad 7 - Diluc DragonStrike(Ручной)
 Numpad 8 - Hu Tao 9N2CJ
