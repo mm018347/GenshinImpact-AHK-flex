@@ -1,8 +1,8 @@
-# Genshi AHK Flex v5.3
-
-Макросные лучники рип. Кикает с сервера через 5-10 мин, на Эмбер с рогаткой все также можно чистить фулл(33*) бездну, но придется перезаходить каждые 5 мин.
+# Genshi AHK Flex v5.4
 
 AHK скрипт для Genshin Impact.
+
+Лучком не рекомендую пользоваться, кикает с сервера.
 
 [Подробное описание](https://github.com/Kramar1337/GenshinImpact-AHK-flex/wiki)
 
@@ -30,6 +30,8 @@ __Что по функционалу:__
   + Hu Tao N2CJ
   + Yoimiya N1RR(38 стрел)
   + Diluc DragonStrike
+  + Xiao SpamPlunge
+  + Xiao N1SpamPlunge
 
 __Возможности:__
 
@@ -129,11 +131,14 @@ Numpad 4 - Ganyu Venti Yoimiya Gorou Amber Fischl Aloy Tartaglia *Diona *Sara
 Numpad 5 - MachineGun: Ganyu Venti Yoimiya Gorou
 Numpad 6 - Legit лучники если кикает с сервера
 Numpad 7 - Diluc DragonStrike(Ручной)
-Numpad 8 - Hu Tao 9N2CJ
-Numpad 9 - Hu Tao 9H1CJ
+Numpad 8 - Hu Tao N2CJ
+Numpad 9 - Hu Tao H1CJ
 Alt + Numpad 1 - Klee N1CJ
 Alt + Numpad 2 - Klee N2H1
 Alt + Numpad 3 - Klee AutoAttack(Удерживать WASD + Macro Key)
+Alt + Numpad 4 - AutoAttack
+Alt + Numpad 5 - Xiao SpamPlunge
+Alt + Numpad 6 - Xiao N1SpamPlunge
 
 Python
 Tab + ~(тильт или Ё) - Обновить список мелодий
@@ -151,13 +156,24 @@ CTRL-ALT-Numpad0 - Запустить ярлык GenshAHK.lnk
 
 <details>
 <summary>==Список изменений==</summary>
-Изменения: 21.12.2021
 
+Изменения: 14.01.2022
+
+ - Исправление масштабирования оверлея и удаление надстройки
+ - Оверлей оружки
+ - Небольшие исправления GUI
+ - Alt + Numpad 4 - AutoAttack(60мс)
+ - Alt + Numpad 5 - Xiao SpamPlunge
+ - Alt + Numpad 6 - Xiao N1SpamPlunge
+
+Изменения: 05.01.2022
+ - Изменения оверлея (+Мико)
+
+Изменения: 21.12.2021
  - Добавлены Горо и Итто в 6 стр оверлея +пушки
  - Подкручен бинд на карту, отключена максимизация окна(вернуть если будут проблемы)
 
 Изменения: 10.12.2021
-
  - Numpad 6 - Legit лучники если кикает с сервера, c 10.12.21 не кикает
  - Alt + Numpad 1 - Klee N1CJ
  - Alt + Numpad 2 - Klee N2H1, спасибо "Eternal"
@@ -170,11 +186,9 @@ CTRL-ALT-Numpad0 - Запустить ярлык GenshAHK.lnk
  - Удаление SendPlay режима, он теперь просто не нужен
 
 Изменения: 26.11.2021
-
  - В оверлей добавлены ШеньХе и Юнджин, небольшие исправления
 
 Изменения: 19.11.2021
-
  - Исправлены чекбокс фастлута и скипа диалогов, спасибо "Финику"
 
 Изменения: 14.11.2021
@@ -187,7 +201,6 @@ CTRL-ALT-Numpad0 - Запустить ярлык GenshAHK.lnk
  - Настройки - Карты, подсвечивается выбранная карта "<="
 
 Изменения: 05.11.2021
-
  - Numpad 8 - Hu Tao 9N2CJ(2 нормал => отмена прыжком, 9-10 тычек, хитлаг удлиняет пиро инфузию до 10 сек)
  - Numpad 9 - Hu Tao 9H1CJ(удержание => отмена прыжком, 9 тычек)	
  - Оверлей с инфой стр 5 ап оружия и Тома
