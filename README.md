@@ -1,4 +1,4 @@
-# Genshi AHK Flex v5.4
+# Genshi AHK Flex v5.41
 
 AHK скрипт для Genshin Impact.
 
@@ -32,6 +32,7 @@ __Что по функционалу:__
   + Diluc DragonStrike
   + Xiao SpamPlunge
   + Xiao N1SpamPlunge
+  + Ganyu Hold
 
 __Возможности:__
 
@@ -139,6 +140,8 @@ Alt + Numpad 3 - Klee AutoAttack(Удерживать WASD + Macro Key)
 Alt + Numpad 4 - AutoAttack
 Alt + Numpad 5 - Xiao SpamPlunge
 Alt + Numpad 6 - Xiao N1SpamPlunge
+Alt + Numpad 7 - Ganyu Hold (Test 1)
+Alt + Numpad 8 - Ganyu Hold (Test 2)
 
 Python
 Tab + ~(тильт или Ё) - Обновить список мелодий
@@ -157,8 +160,17 @@ CTRL-ALT-Numpad0 - Запустить ярлык GenshAHK.lnk
 <details>
 <summary>==Список изменений==</summary>
 
-Изменения: 14.01.2022
+Изменения: 26.01.2022
 
+ - Обратный фикс чат для скипа диалогов
+ - Переработан манипулятор реестра: +Фильтры, -кнопки и тд
+ - Alt + Numpad 7 - Ganyu Hold
+ - Alt + Numpad 8 - Ganyu Hold
+
+Изменения: 22.01.2022
+ - Переделана логика работы бинда интерактивной карты
+
+Изменения: 14.01.2022
  - Исправление масштабирования оверлея и удаление надстройки
  - Оверлей оружки
  - Небольшие исправления GUI
