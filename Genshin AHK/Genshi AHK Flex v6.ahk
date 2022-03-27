@@ -24,6 +24,8 @@ Numpad 6 - Legit лучники если кикает с сервера
 Numpad 7 - Diluc DragonStrike(Ручной)
 Numpad 8 - Hu Tao N2CJ (slow)
 Numpad 9 - Hu Tao H1CJ
+NumpadAdd - Expeditions
+NumpadSub - Kaeya seafarer
 Alt + Numpad 0 - Hu Tao N2CJ (fast)
 Alt + Numpad 1 - Klee N1CJ
 Alt + Numpad 2 - Klee N2H1
@@ -34,7 +36,8 @@ Alt + Numpad 6 - Xiao N1SpamPlunge
 Alt + Numpad 7 - Ganyu Hold (Test 1)
 Alt + Numpad 8 - Ganyu Hold (Test 2)
 Alt + Numpad 9 - Swimming
-Alt + NumpadAdd - Expeditions(Test)
+Alt + NumpadAdd - Mona infinite swimming (дабл клик вкл, сингл клик выкл)
+Alt + NumpadSub - Auto coсking (дабл клик вкл, сингл клик выкл)
 
 Python
 Tab + ~(тильт или Ё) - Обновить список мелодий
@@ -112,13 +115,26 @@ Insert - Включить/отключить ReShade
 
 
 Запланировано:
-бкапер настроек фристалеровских решейд фильтров для нвидии
-оверлей с выбором макросов
+поправить описание фулскрин - оконный
 
 
 
 
 
+
+Изменения: 27.03.2022
+ - Микро исправления
+ - Оверлей с выбором макросов
+ - Доп отладка
+ - Настройка таймера в минутах "TTimerahk1" в "genConfig.ini"
+ - NumpadSub - Мореплаватель Кея(не забыть переключиться в режим ходьбы)
+ - Alt + NumpadAdd - Мона бесконечная стамина в воде
+ - Alt + NumpadSub - Автоготовка
+ - Изменения оверлея
+
+Изменения: 18.03.2022
+ - ReShade теперь идеален, работают отражения, +ярлык для запуска обхода в трее
+ - Настраиваемый сбор экспедиций "genConfig.ini"
 
 Изменения: 06.03.2022
  - ДПИскейл на уидхайд
@@ -368,7 +384,7 @@ Insert - Включить/отключить ReShade
 
 
 ;===============================дерективы
-WinName:= "Genshi AHK Flex v6 by Kramar1337"
+WinName:= "Genshi AHK Flex v6.1 by Kramar1337"
 #NoEnv
 SendMode Input
 SetWorkingDir %A_ScriptDir%
@@ -380,13 +396,10 @@ Global SuperGlobalVarRan:=0
 
 
 ;========================================================запускать самого себя от имени администратора
-; A_IsAdmin
 IniRead, metodVvoda, data\genConfig.ini, Setings, metodVvoda
 IniRead, IsAdmin, data\genConfig.ini, Setings, IsAdmin
 if IsAdmin
 {
-
-
 
 CommandLine := DllCall("GetCommandLine", "Str")
 If !(A_IsAdmin || RegExMatch(CommandLine, " /restart(?!\S)")) {
@@ -400,10 +413,7 @@ If !(A_IsAdmin || RegExMatch(CommandLine, " /restart(?!\S)")) {
     ExitApp
 }
 
-
-
 }
-
 
 
 ;========================================================подключаем библиотеки для работы драйвера интерсепшн
@@ -435,7 +445,6 @@ Global mouseid := AHI.GetMouseId(MouseVID, MousePID)
 Global keyboardid := AHI.GetKeyboardId(KeyboardVID, KeyboardPID)
 }
 
-
 ;========================конфиг под авторыбалку
 CoordMode Mouse, Screen 	;двигать мышку от окна
 CoordMode Pixel, Screen 	;искать пиксели от окна
@@ -461,10 +470,6 @@ SetControlDelay, -1
 SetMouseDelay, -1
 SetWinDelay,-1
 }
-; MsgBox %A_BatchLines%`n%A_KeyDelay%`n%A_ControlDelay%`n%A_MouseDelay%`n%A_WinDelay%
-
-
-
 
 
 ;=====================================безопасность
@@ -473,8 +478,6 @@ IniRead, ScRenamer, data\genConfig.ini, Setings, ScRenamer ; проверка Re
 IniRead, ScHachCh, data\genConfig.ini, Setings, ScHachCh ; проверка ScHachCh
 IniRead, ScRandomT, data\genConfig.ini, Setings, ScRandomT ; проверка рандом таймер
 IniRead, ScOverlay, data\genConfig.ini, Setings, ScOverlay ; проверка uid overlay
-
-
 
 If ScHachCh
 {
@@ -509,7 +512,6 @@ HpBarW2:=round((ScreenWidthRe1*.9695) - (ScreenWidthRe1*.8738))
 HpBarH2:=round((ScreenHeightRe1*.9965) - (ScreenHeightRe1*.9743))
 HpBarX2:=round(ScreenWidthRe1*.8738)
 HpBarY2:=round(ScreenHeightRe1*.9743)
-; MsgBox %HpBarW2% %HpBarH2% %HpBarX2% %HpBarY2%
 Gui,uid: Show, w%HpBarW2% h%HpBarH2% x%HpBarX2% y%HpBarY2%, %password%
 ;==============
 }
@@ -590,8 +592,16 @@ if DefaultJopaTrue = 19
 jopa19:=true
 if DefaultJopaTrue = 20
 jopa20:=true
-
-
+if DefaultJopaTrue = 21
+jopa21:=true
+if DefaultJopaTrue = 22
+jopa22:=true
+if DefaultJopaTrue = 23
+jopa23:=true
+if DefaultJopaTrue = 24
+jopa24:=true
+if DefaultJopaTrue = 25
+jopa25:=true
 
 
 
@@ -607,32 +617,24 @@ IniRead, key_autoswim, data\genConfig.ini, Binds, key_autoswim
 IniRead, key_vi4er_sens, data\genConfig.ini, Binds, key_vi4er_sens
 
 ;====================Подгрузка конфига: дополнительные
-; IniRead, ShortcutKey, data\genConfig.ini, Extra, ShortcutKey 	;Забиндить ярлык системными кнопками, по дефолту CTRL-ALT-Numpad5
 
 IniRead, CheckUpdatePic, data\genConfig.ini, Setings, CheckUpdatePic
-
 IniRead, FIXchat, data\genConfig.ini, Setings, FIXchat
 IniRead, IsAdmin, data\genConfig.ini, Setings, IsAdmin
 IniRead, AutoExitAHK, data\genConfig.ini, Setings, AutoExitAHK
-
 IniRead, MousemoveBow, data\genConfig.ini, Extra, MousemoveBow 	;двигать мышку вправо когда идет стрельба с макроса на винапи
 IniRead, FishMouseMoveX, data\genConfig.ini, Extra, FishMouseMoveX 	;сколько двигать для фишль по X = 43 на дефолтных настройках
 IniRead, FishMouseMoveY, data\genConfig.ini, Extra, FishMouseMoveY 	;сколько двигать для фишль по Y = 0
-
 IniRead, VentiMouseMoveX, data\genConfig.ini, Extra, VentiMouseMoveX 	;двигать для венти по X = 43 на дефолтных настройках
 IniRead, VentiMouseMoveY, data\genConfig.ini, Extra, VentiMouseMoveY 	;двигать для венти по X = 0
 
-
 ;====================Подгрузка конфига: основные
-
-
 
 IniRead, BrauzerCheck, data\genConfig.ini, Setings, BrauzerCheck ; проверка браузера
 IniRead, BrauzerPick, data\genConfig.ini, Setings, BrauzerPick ; выбор браузера
 IniRead, Map2toggle, data\genConfig.ini, Setings, Map2toggle
 IniRead, gameexe1337, data\genConfig.ini, Setings, GameExe	; исполняемый файл игры
 IniRead, ONregreadDir, data\genConfig.ini, Setings, ONregreadDir ; поиск папки в реестре для откл кастсцен
-; IniRead, CheckboxRegDir, data\genConfig.ini, Setings, ONregreadDir
 IniRead, DirGame, data\genConfig.ini, Setings, DirGame
 IniRead, metodVvoda, data\genConfig.ini, Setings, metodVvoda
 IniRead, showtooltipVvoba, data\genConfig.ini, Setings, showtooltipVvoba
@@ -647,22 +649,15 @@ IniRead, Checkbox1skipNPS, data\genConfig.ini, Setings, Checkbox1skipNPS
 IniRead, Checkbox1autoswim, data\genConfig.ini, Setings, Checkbox1autoswim
 IniRead, Checkbox1vi4ersens, data\genConfig.ini, Setings, Checkbox1vi4ersens
 IniRead, Checkbox1animcancel, data\genConfig.ini, Setings, Checkbox1animcancel
-; IniRead, Checkbox1animcancelLock, data\genConfig.ini, Setings, Checkbox1animcancelLock
 IniRead, Checkbox1bhop, data\genConfig.ini, Setings, Checkbox1bhop
 IniRead, Checkbox1bhopDelay, data\genConfig.ini, Setings, Checkbox1bhopDelay
 IniRead, Checkbox1bhopDelayMs, data\genConfig.ini, Setings, Checkbox1bhopDelayMs
-
 
 IniRead, RegeditExport1, data\genConfig.ini, Setings, RegeditExport1
 IniRead, RegeditExport2, data\genConfig.ini, Setings, RegeditExport2
 IniRead, RegeditExport3, data\genConfig.ini, Setings, RegeditExport3
 IniRead, RegeditExport4, data\genConfig.ini, Setings, RegeditExport4
 IniRead, RegeditExport5, data\genConfig.ini, Setings, RegeditExport5
-
-; IniRead, RegeditCheckBox1, data\genConfig.ini, Setings, RegeditCheckBox1
-; IniRead, RegeditCheckBox2, data\genConfig.ini, Setings, RegeditCheckBox2
-; IniRead, RegeditCheckBox3, data\genConfig.ini, Setings, RegeditCheckBox3
-; IniRead, RegeditCheckBox4, data\genConfig.ini, Setings, RegeditCheckBox4
 
 IniRead, GlLanguage, data\genConfig.ini, Setings, GlLanguage
 
@@ -716,7 +711,40 @@ Hotkey, *~$%key_LabelANumpad9%, LabelANumpad9, on
 IniRead, key_LabelNumpadAdd, data\genConfig.ini, Binds, key_LabelNumpadAdd
 Hotkey, *~$%key_LabelNumpadAdd%, LabelNumpadAdd, on
 
+IniRead, key_LabelANumpadAdd, data\genConfig.ini, Binds, key_LabelANumpadAdd
+Hotkey, *~$%key_LabelANumpadAdd%, LabelANumpadAdd, on
 
+IniRead, key_LabelNumpadSub, data\genConfig.ini, Binds, key_LabelNumpadSub
+Hotkey, *~$%key_LabelNumpadSub%, LabelNumpadSub, on
+
+IniRead, key_LabelANumpadSub, data\genConfig.ini, Binds, key_LabelANumpadSub
+Hotkey, *~$%key_LabelANumpadSub%, LabelANumpadSub, on
+
+;==================================================экспедиции [Expedition]
+
+IniRead, ExManualMode, data\genConfig.ini, Expedition, ExManualMode
+
+IniRead, ExMondK1, data\genConfig.ini, Expedition, ExMondK1
+IniRead, ExMondK2, data\genConfig.ini, Expedition, ExMondK2
+IniRead, ExMondK3, data\genConfig.ini, Expedition, ExMondK3
+IniRead, ExMondK4, data\genConfig.ini, Expedition, ExMondK4
+IniRead, ExMondK5, data\genConfig.ini, Expedition, ExMondK5
+IniRead, ExMondK6, data\genConfig.ini, Expedition, ExMondK6
+
+IniRead, ExLiyK1, data\genConfig.ini, Expedition, ExLiyK1
+IniRead, ExLiyK2, data\genConfig.ini, Expedition, ExLiyK2
+IniRead, ExLiyK3, data\genConfig.ini, Expedition, ExLiyK3
+IniRead, ExLiyK4, data\genConfig.ini, Expedition, ExLiyK4
+IniRead, ExLiyK5, data\genConfig.ini, Expedition, ExLiyK5
+IniRead, ExLiyK6, data\genConfig.ini, Expedition, ExLiyK6
+
+
+IniRead, ExInaK1, data\genConfig.ini, Expedition, ExInaK1
+IniRead, ExInaK2, data\genConfig.ini, Expedition, ExInaK2
+IniRead, ExInaK3, data\genConfig.ini, Expedition, ExInaK3
+IniRead, ExInaK4, data\genConfig.ini, Expedition, ExInaK4
+IniRead, ExInaK5, data\genConfig.ini, Expedition, ExInaK5
+IniRead, ExInaK6, data\genConfig.ini, Expedition, ExInaK6
 
 
 ScreenWidthRe1:=A_ScreenWidth
@@ -727,8 +755,6 @@ ScreenHeightRe1:=A_ScreenHeight
 If (ONregreadDir == 1) ; Если в конфиге путь к игре реестр вкл, то:
 {
 ;=====================Реестр расположение папки с игрой
-; Старый путь здох, работал на релизе, через год не робит, стоило догадаться путь и вправду странный
-; RegRead, DirVarGensh, HKEY_LOCAL_MACHINE, SOFTWARE\launcher, InstPath
 RegRead, DirVarGensh, HKEY_LOCAL_MACHINE, SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Genshin Impact, UninstallString
 SplitPath, DirVarGensh,,DirVarGensh
 }
@@ -766,12 +792,11 @@ Menu,Tray, Default , Setings
 Menu,Tray, add
 Menu,Tray, add, Сreate AHK shortcut, Metkashortcut1
 Menu,Tray, add, Сreate Game shortcut, Metkashortcut2
+Menu,Tray, add, Сreate ReShade shortcut, Metkashortcut3
 Menu,Tray, add
-; Menu,Tray, add, Info, MetkaMenu2
 Menu,Tray, add, Exit, MetkaMenu0
 Menu,Tray, Icon, data\genicon.ico, ,1
 ;====================Gui настройки
-; Gui, 1: -MinimizeBox
 if GlLanguage
 Gui, 1: Add, Tab3, x0 y0 w469 h277, Бинды|Настройки|Безопасность|Реестр|Решейд|Ресурсы
 Else
@@ -835,16 +860,11 @@ Gui, 1: Add, CheckBox, vCheckbox0vi4ersens x16 y184 w13 h18 Checked%Checkbox1vi4
 Gui, 1: Add, Edit, x40 y208 w61 h21 vkey_animcancel, %key_animcancel%
 Gui, 1: Add, Text, v1Textanimcancel x104 y208 w56 h23, MacroKey
 Gui, 1: Add, CheckBox, vCheckbox0animcancel x16 y208 w13 h18 Checked%Checkbox1animcancel%
-; Gui, 1: Add, CheckBox, vCheckbox0animcancelLock x161 y208 w44 h18 Checked%Checkbox1animcancelLock%, *Lock
-
-
 
 
 Gui, 1: Add, Edit, x40 y232 w61 h21 +Disabled, Space
 Gui, 1: Add, Text, x104 y232 w31 h20, Bhop
 Gui, 1: Add, CheckBox, vCheckbox0bhop x16 y232 w13 h18 Checked%Checkbox1bhop%
-
-
 
 Gui, 1: Add, Edit, vCheckbox1bhopDelayMs x160 y232 w28 h17 Number Limit4, %Checkbox1bhopDelayMs%
 
@@ -910,7 +930,6 @@ Gui, 1: Add, CheckBox, vCheckboxshowmegui x16 y224 w120 h23 Checked%showmegui%, 
 
 Gui, 1: Add, CheckBox, vCheckboxGlLanguage x16 y176 w120 h23 Checked%GlLanguage%, RU language GUI
 Gui, 1: Add, CheckBox, vCheckboxMousemoveBow x16 y248 w120 h23 Checked%MousemoveBow%, RCS WinApi Bow
-; Gui, 1: Add, CheckBox, vCheckboxScaleFIX x160 y200 w120 h23 Checked%ScaleFIX%, FIX Overlay Scale
 Gui, 1: Add, CheckBox, vCheckboxHighperformancemode x160 y176 w120 h23 Checked%Highperformancemode%, AHK Max Speed
 Gui, 1: Add, CheckBox, vCheckboxFIXchat x160 y200 w120 h23 Checked%FIXchat%, FIX Macro + chat
 
@@ -942,7 +961,6 @@ Gui, 1: Add, GroupBox, x344 y24 w114 h79, Update
 
 Gui, 1: Add, CheckBox, vCheckboxImportAll x352 y40 w100 h23 +Checked, Reg + Midi files
 Gui, 1: Add, Button, gImportSettButton x352 y72 w97 h23, Import
-; Gui, 1: Add, Button, gExportSettButton x352 y72 w43 h23, Export
 
 
 Gui, 1: Tab, 3 	;===============безопасность=====================================================================безопасность====Tab
@@ -988,10 +1006,6 @@ Gui, 1: Add, Button, g2pickreg2 x192 y72 w37 h23, Copy
 Gui, 1: Add, Button, g3pickreg3 x192 y104 w37 h23, Copy
 Gui, 1: Add, Button, g4pickreg4 x192 y136 w37 h23, Copy
 Gui, 1: Add, Button, g5pickreg5 x192 y168 w37 h23, Copy
-; Gui, 1: Add, CheckBox, vCheckboxRegeditCheckBox1 x24 y40 w21 h22 Checked%RegeditCheckBox1%
-; Gui, 1: Add, CheckBox, vCheckboxRegeditCheckBox2 x24 y72 w21 h22 Checked%RegeditCheckBox2%
-; Gui, 1: Add, CheckBox, vCheckboxRegeditCheckBox3 x24 y104 w21 h22 Checked%RegeditCheckBox3%
-; Gui, 1: Add, CheckBox, vCheckboxRegeditCheckBox4 x24 y136 w21 h22 Checked%RegeditCheckBox4%
 
 
 Gui, 1: Add, Button, gMetkakey_regeditstart1 x16 y40 w36 h23, Write
@@ -1011,8 +1025,7 @@ Gui, 1: Add, GroupBox, x8 y24 w186 h50, ReShade
 Gui, 1: Add, Button, g1ReshadeInstal x16 y40 w39 h23, Instal
 Gui, 1: Add, Button, g1ReshadeRemove x72 y40 w55 h23, Remove
 Gui, 1: Add, Button, g1ReshadeRun x144 y40 w39 h23, Run
-; Gui, 1: Add, Text, x16 y72 w120 h23, Step 1. Instal
-; Gui, 1: Add, Text, x16 y96 w157 h23, Step 2. Run and start the game
+
 Gui, 1: Add, Picture, x208 y16 w252 h256 +BackgroundTrans, data\page5pcmr.png
 Gui, 1: Add, GroupBox, x8 y80 w186 h49, Nvidia Freestyle up
 Gui, 1: Add, Button, g1FreestyleInstal x16 y96 w39 h23, Instal
@@ -1026,10 +1039,10 @@ Gui, 1: Add, GroupBox, x8 y24 w147 h146, Разное
 Else
 Gui, 1: Add, GroupBox, x8 y24 w147 h146, Other
 Gui, 1: Add, Link, x16 y48 w120 h23, <a href="https://paimon.moe/timeline/">Timeline</a>
-Gui, 1: Add, Link, x16 y72 w120 h23, <a href="https://genshin.aspirine.su/">ASPirine Калькулятор</a>
-Gui, 1: Add, Link, x16 y96 w120 h23, <a href="https://frzyc.github.io/genshin-optimizer/#/">Genshin Optimizer</a>
+Gui, 1: Add, Link, x16 y72 w120 h23, <a href="https://www.hoyolab.com/home">Hoyolab</a>
+Gui, 1: Add, Link, x16 y96 w120 h23, <a href="https://genshin.aspirine.su/">ASPirine Калькулятор</a>
 Gui, 1: Add, Link, x16 y120 w120 h23, <a href="https://genshin.honeyhunterworld.com/">Honeyhunterworld.com</a>
-Gui, 1: Add, Link, x16 y144 w120 h23, <a href="https://genshin-impact.fandom.com/wiki/Genshin_Impact_Wiki">Genshin Impact Wiki</a>
+Gui, 1: Add, Link, x16 y144 w120 h23, <a href="https://frzyc.github.io/genshin-optimizer/#/">Genshin Optimizer</a>
 if GlLanguage
 Gui, 1: Add, GroupBox, x160 y24 w147 h146, Карты
 Else
@@ -1069,7 +1082,10 @@ Path = %A_AhkPath%
 )
 Gui, 1: Add, Edit, x16 y192 w386 h63 +ReadOnly +Multi, %DebugInformationGet%
 Gui, 1: Font
-Gui, 1: Add, Button, gCopyDebugInformationGet x408 y212 w43 h23, Copy
+Gui, 1: Add, Button, gCopyDebugInformationGet x408 y192 w43 h23, Copy
+Gui, 1: Add, Button, gGetListVars1337 x408 y232 w43 h23, Dbg
+
+
 
 
 Gui, 1: Tab
@@ -1118,7 +1134,6 @@ Gui, 1: Show
 ;===============================Переменные
 xSkip:=round(A_ScreenWidth*.7328)
 ySkip:=round(A_ScreenHeight*.7256)
-; 7465 старые значения ySkip
 var0ov:=1 ;оверлей обозначить переменную
 
 
@@ -1183,9 +1198,9 @@ GroupAdd, GroupNameMap1337, Genshin Map
 ;===============заглушка для работы оверлея
 var0ov := 1
 ;===============колво страниц
-GenOverlayList := 9
+GenOverlayList := 10
 ;===============где гифки
-CheckVarKey1PaimonGifList := "6"
+CheckVarKey1PaimonGifList := "7"
 ; CheckVarKey1PaimonGifList := "5,6"
 
 HpBarW:=ScreenWidthRe1
@@ -1193,8 +1208,7 @@ HpBarH:=ScreenHeightRe1
 HpBarX:=0
 HpBarY:=0
 Gui, 99: +AlwaysOnTop +ToolWindow -Caption +LastFound -DPIScale
-; WinSet, TransColor, 12345
-; Gui, 99: Color, 12345
+
 ;====================================гладкий переход
 Gui, 99: Color, 0x000000
 Random, RandomGifVar1, 1, 2
@@ -1216,16 +1230,6 @@ oIE.Document.close
 GuiControl, 99: hide, oIE
 Gui, 99: Add, Picture, w%HpBarW% h%HpBarH% x0 y0 vMyPictureVar1, data\genOverlay1.png
 
-; 2395 1377
-; 2450 1433
-; 110 7
-
-; 0,935546875
-; 0,95625
-
-; 0,02070
-; 0,03819
-
 XwidthPicOver := Round(ScreenWidthRe1 *.93554)
 YheightPicOver := Round(ScreenHeightRe1 *.95625)
 widthPicOver := Round(ScreenWidthRe1 *.02070)
@@ -1234,6 +1238,60 @@ XwidthPicOver2 := Round(ScreenWidthRe1 *.96718)
 YheightPicOver2 := Round(ScreenHeightRe1 *.95625)
 Gui, 99: Add, Picture, w%widthPicOver% h%heightPicOver% x%XwidthPicOver% y%YheightPicOver% +BackgroundTrans gPicOverlay1, data\genOverlayNext.png
 Gui, 99: Add, Picture, w%widthPicOver% h%heightPicOver% x%XwidthPicOver2% y%YheightPicOver2% +BackgroundTrans gPicOverlay2, data\genOverlayNext.png
+
+Gui, 99: Font, % "s" round(A_ScreenWidth * (20 / 2560)) " q1 c0x400000 Bold", Comic Sans MS
+Gui, 99: Add, Text, % "vLabTextMyEdit" " x" round(A_ScreenWidth * (64 / 2560)) " y" round(A_ScreenHeight * (50 / 1440)) " +BackgroundTrans", Macro Key (Кликабельные строки)
+Gui, 99: Add, Text, % "vLabTextMyEdit0" " gLabelNumpad0" " x" round(A_ScreenWidth * (64 / 2560)) " y" round(A_ScreenHeight * (150 / 1440)) " +BackgroundTrans", Numpad 0 - Включить/отключить банихоп
+Gui, 99: Add, Text, % "vLabTextMyEdit1" " gLabelNumpad1" " x" round(A_ScreenWidth * (64 / 2560)) " y" round(A_ScreenHeight * (200 / 1440)) " +BackgroundTrans", Numpad 1 - AutoAttack
+Gui, 99: Add, Text, % "vLabTextMyEdit2" " gLabelNumpad2" " x" round(A_ScreenWidth * (64 / 2560)) " y" round(A_ScreenHeight * (250 / 1440)) " +BackgroundTrans", Numpad 2 - Ningguang
+Gui, 99: Add, Text, % "vLabTextMyEdit3" " gLabelNumpad3" " x" round(A_ScreenWidth * (64 / 2560)) " y" round(A_ScreenHeight * (300 / 1440)) " +BackgroundTrans", Numpad 3 - Yoimiya N1RR
+Gui, 99: Add, Text, % "vLabTextMyEdit4" " gLabelNumpad4" " x" round(A_ScreenWidth * (64 / 2560)) " y" round(A_ScreenHeight * (350 / 1440)) " +BackgroundTrans", Numpad 4 - Ganyu Venti Yoimiya Amber Fischl Aloy Tartaglia *Diona *Sara
+Gui, 99: Add, Text, % "vLabTextMyEdit5" " gLabelNumpad5" " x" round(A_ScreenWidth * (64 / 2560)) " y" round(A_ScreenHeight * (400 / 1440)) " +BackgroundTrans", Numpad 5 - MachineGun: Ganyu Venti Yoimiya
+Gui, 99: Add, Text, % "vLabTextMyEdit6" " gLabelNumpad6" " x" round(A_ScreenWidth * (64 / 2560)) " y" round(A_ScreenHeight * (450 / 1440)) " +BackgroundTrans", Numpad 6 - Legit лучники если кикает с сервера
+Gui, 99: Add, Text, % "vLabTextMyEdit7" " gLabelNumpad7" " x" round(A_ScreenWidth * (64 / 2560)) " y" round(A_ScreenHeight * (500 / 1440)) " +BackgroundTrans", Numpad 7 - Diluc DragonStrike(Ручной)
+Gui, 99: Add, Text, % "vLabTextMyEdit8" " gLabelNumpad8" " x" round(A_ScreenWidth * (64 / 2560)) " y" round(A_ScreenHeight * (550 / 1440)) " +BackgroundTrans", Numpad 8 - Hu Tao N2CJ (slow)
+Gui, 99: Add, Text, % "vLabTextMyEdit9" " gLabelNumpad9" " x" round(A_ScreenWidth * (64 / 2560)) " y" round(A_ScreenHeight * (600 / 1440)) " +BackgroundTrans", Numpad 9 - Hu Tao H1CJ
+
+Gui, 99: Add, Text, % "vLabTextMyEdit42" " gLabelNumpadAdd" " x" round(A_ScreenWidth * (64 / 2560)) " y" round(A_ScreenHeight * (650 / 1440)) " +BackgroundTrans", NumpadAdd - Expeditions
+Gui, 99: Add, Text, % "vLabTextMyEdit43" " gLabelNumpadSub" " x" round(A_ScreenWidth * (64 / 2560)) " y" round(A_ScreenHeight * (700 / 1440)) " +BackgroundTrans", NumpadSub - Kaeya seafarer (x1 - off, x2 - on)
+
+Gui, 99: Add, Text, % "vLabTextMyEdit10" " gLabelANumpad0" " x" round(A_ScreenWidth * (64 / 2560)) " y" round(A_ScreenHeight * (750 / 1440)) " +BackgroundTrans", Alt + Numpad 0 - Hu Tao N2CJ (fast)
+Gui, 99: Add, Text, % "vLabTextMyEdit11" " gLabelANumpad1" " x" round(A_ScreenWidth * (64 / 2560)) " y" round(A_ScreenHeight * (800 / 1440)) " +BackgroundTrans", Alt + Numpad 1 - Klee N1CJ
+Gui, 99: Add, Text, % "vLabTextMyEdit12" " gLabelANumpad2" " x" round(A_ScreenWidth * (64 / 2560)) " y" round(A_ScreenHeight * (850 / 1440)) " +BackgroundTrans", Alt + Numpad 2 - Klee N2H1
+Gui, 99: Add, Text, % "vLabTextMyEdit13" " gLabelANumpad3" " x" round(A_ScreenWidth * (64 / 2560)) " y" round(A_ScreenHeight * (900 / 1440)) " +BackgroundTrans", Alt + Numpad 3 - Klee AutoAttack(Удерживать WASD + Macro Key)
+Gui, 99: Add, Text, % "vLabTextMyEdit14" " gLabelANumpad4" " x" round(A_ScreenWidth * (64 / 2560)) " y" round(A_ScreenHeight * (950 / 1440)) " +BackgroundTrans", Alt + Numpad 4 - Xiao N1H1Plunge
+Gui, 99: Add, Text, % "vLabTextMyEdit15" " gLabelANumpad5" " x" round(A_ScreenWidth * (64 / 2560)) " y" round(A_ScreenHeight * (1000 / 1440)) " +BackgroundTrans", Alt + Numpad 5 - Xiao SpamPlunge
+Gui, 99: Add, Text, % "vLabTextMyEdit16" " gLabelANumpad6" " x" round(A_ScreenWidth * (64 / 2560)) " y" round(A_ScreenHeight * (1050 / 1440)) " +BackgroundTrans", Alt + Numpad 6 - Xiao N1SpamPlunge
+Gui, 99: Add, Text, % "vLabTextMyEdit17" " gLabelANumpad7" " x" round(A_ScreenWidth * (64 / 2560)) " y" round(A_ScreenHeight * (1100 / 1440)) " +BackgroundTrans", Alt + Numpad 7 - Ganyu Hold T1
+Gui, 99: Add, Text, % "vLabTextMyEdit18" " gLabelANumpad8" " x" round(A_ScreenWidth * (64 / 2560)) " y" round(A_ScreenHeight * (1150 / 1440)) " +BackgroundTrans", Alt + Numpad 8 - Ganyu Hold T2
+Gui, 99: Add, Text, % "vLabTextMyEdit19" " gLabelANumpad9" " x" round(A_ScreenWidth * (64 / 2560)) " y" round(A_ScreenHeight * (1200 / 1440)) " +BackgroundTrans", Alt + Numpad 9 - Swimming
+Gui, 99: Add, Text, % "vLabTextMyEdit20" " gLabelANumpadAdd" " x" round(A_ScreenWidth * (64 / 2560)) " y" round(A_ScreenHeight * (1250 / 1440)) " +BackgroundTrans", Alt + NumpadAdd - Mona infinite swimming (x1 - off, x2 - on)
+Gui, 99: Add, Text, % "vLabTextMyEdit44" " gLabelANumpadSub" " x" round(A_ScreenWidth * (64 / 2560)) " y" round(A_ScreenHeight * (1300 / 1440)) " +BackgroundTrans", Alt + NumpadSub - Auto coсking (x1 - off, x2 - on)
+
+Gui, 99: Add, Text, % "vLabTextMyEdit41" " x" round(A_ScreenWidth * (1400 / 2560)) " y" round(A_ScreenHeight * (50 / 1440)) " +BackgroundTrans", AHK
+Gui, 99: Add, Text, % "vLabTextMyEdit21" " x" round(A_ScreenWidth * (1400 / 2560)) " y" round(A_ScreenHeight * (150 / 1440)) " +BackgroundTrans", F1 - *Карта
+Gui, 99: Add, Text, % "vLabTextMyEdit22" " x" round(A_ScreenWidth * (1400 / 2560)) " y" round(A_ScreenHeight * (200 / 1440)) " +BackgroundTrans", F2 - *Оверлей
+Gui, 99: Add, Text, % "vLabTextMyEdit23" " x" round(A_ScreenWidth * (1400 / 2560)) " y" round(A_ScreenHeight * (250 / 1440)) " +BackgroundTrans", F3 - *Автоходьба
+Gui, 99: Add, Text, % "vLabTextMyEdit24" " x" round(A_ScreenWidth * (1400 / 2560)) " y" round(A_ScreenHeight * (300 / 1440)) " +BackgroundTrans", F - Фастлут
+Gui, 99: Add, Text, % "vLabTextMyEdit25" " x" round(A_ScreenWidth * (1400 / 2560)) " y" round(A_ScreenHeight * (350 / 1440)) " +BackgroundTrans", Z - Скип диалогов
+Gui, 99: Add, Text, % "vLabTextMyEdit26" " x" round(A_ScreenWidth * (1400 / 2560)) " y" round(A_ScreenHeight * (400 / 1440)) " +BackgroundTrans", X - Авторыбалка (дабл клик вкл, сингл клик выкл)
+Gui, 99: Add, Text, % "vLabTextMyEdit27" " x" round(A_ScreenWidth * (1400 / 2560)) " y" round(A_ScreenHeight * (450 / 1440)) " +BackgroundTrans", N - Таймер (дабл клик вкл, сингл клик выкл) (-popupwindow)
+Gui, 99: Add, Text, % "vLabTextMyEdit28" " x" round(A_ScreenWidth * (1400 / 2560)) " y" round(A_ScreenHeight * (500 / 1440)) " +BackgroundTrans", Space - Банихоп
+Gui, 99: Add, Text, % "vLabTextMyEdit29" " x" round(A_ScreenWidth * (1400 / 2560)) " y" round(A_ScreenHeight * (550 / 1440)) " +BackgroundTrans", Left - Пролистать оверлей
+Gui, 99: Add, Text, % "vLabTextMyEdit30" " x" round(A_ScreenWidth * (1400 / 2560)) " y" round(A_ScreenHeight * (600 / 1440)) " +BackgroundTrans", Right - Пролистать оверлей
+Gui, 99: Add, Text, % "vLabTextMyEdit31" " x" round(A_ScreenWidth * (1400 / 2560)) " y" round(A_ScreenHeight * (650 / 1440)) " +BackgroundTrans", End - Завершить работу скрипта
+Gui, 99: Add, Text, % "vLabTextMyEdit32" " x" round(A_ScreenWidth * (1400 / 2560)) " y" round(A_ScreenHeight * (700 / 1440)) " +BackgroundTrans", Page Up - *Приостановить-Возобновить работу скрипта
+Gui, 99: Add, Text, % "vLabTextMyEdit33" " x" round(A_ScreenWidth * (1400 / 2560)) " y" round(A_ScreenHeight * (750 / 1440)) " +BackgroundTrans", V - Macro Key
+
+Gui, 99: Add, Text, % "vLabTextMyEdit34" " x" round(A_ScreenWidth * (1400 / 2560)) " y" round(A_ScreenHeight * (850 / 1440)) " +BackgroundTrans", Python
+Gui, 99: Add, Text, % "vLabTextMyEdit35" " x" round(A_ScreenWidth * (1400 / 2560)) " y" round(A_ScreenHeight * (900 / 1440)) " +BackgroundTrans", Tab + ~(тильт или Ё) - Обновить список мелодий
+Gui, 99: Add, Text, % "vLabTextMyEdit36" " x" round(A_ScreenWidth * (1400 / 2560)) " y" round(A_ScreenHeight * (950 / 1440)) " +BackgroundTrans", Tab + 1 2 3 4 5 6 7 8 9 0 - Воспроизвести мелодию на лире ветров
+Gui, 99: Add, Text, % "vLabTextMyEdit37" " x" round(A_ScreenWidth * (1400 / 2560)) " y" round(A_ScreenHeight * (1000 / 1440)) " +BackgroundTrans", Space - Остановить воспроизведение
+
+Gui, 99: Add, Text, % "vLabTextMyEdit38" " x" round(A_ScreenWidth * (1400 / 2560)) " y" round(A_ScreenHeight * (1100 / 1440)) " +BackgroundTrans", ReShade
+Gui, 99: Add, Text, % "vLabTextMyEdit39" " x" round(A_ScreenWidth * (1400 / 2560)) " y" round(A_ScreenHeight * (1150 / 1440)) " +BackgroundTrans", Home - Открыть ReShade меню
+Gui, 99: Add, Text, % "vLabTextMyEdit40" " x" round(A_ScreenWidth * (1400 / 2560)) " y" round(A_ScreenHeight * (1200 / 1440)) " +BackgroundTrans", Insert - Включить/отключить ReShade
+
 
 if (ScWinrenamer = 1)
 Gui, 99: Show, Hide w%HpBarW% h%HpBarH% x%HpBarX% y%HpBarY%, %password%
@@ -1337,8 +1395,10 @@ ExitOnGameClose() {
 
 AntiVACHashChanger:="fghfh3534gjdgdfgfj6867jhmbdsq4123asddfgdfgaszxxcasdf423dfght7657ghnbnghrtwer32esdfgr65475dgdgdf6867ghjkhji7456wsdfsf34sdfsdf324sdfgdfg453453453456345gdgdgdfsf"
 
-
-
+;============================отобразить переменные
+GetListVars1337:
+ListVars
+Return
 
 
 ImportSettButton:
@@ -1438,18 +1498,12 @@ IniWrite, %key_autoswim%, data\genConfig.ini, Binds, key_autoswim
 	IniRead, key_vi4er_sens, %FileVarImport%, Binds, key_vi4er_sens
 	if !(key_vi4er_sens = "ERROR")
 IniWrite, %key_vi4er_sens%, data\genConfig.ini, Binds, key_vi4er_sens
-	; IniRead, ShortcutKey, %FileVarImport%, Extra, ShortcutKey 	;Забиндить ярлык системными кнопками, по дефолту CTRL-ALT-Numpad5
-	; if !(ShortcutKey = "ERROR")
-; IniWrite, %ShortcutKey%, data\genConfig.ini, Extra, ShortcutKey 	;Забиндить ярлык системными кнопками, по дефолту CTRL-ALT-Numpad5
 	IniRead, FIXchat, %FileVarImport%, Setings, FIXchat
 	if !(FIXchat = "ERROR")
 IniWrite, %FIXchat%, data\genConfig.ini, Setings, FIXchat
-
-
 	IniRead, CheckUpdatePic, %FileVarImport%, Setings, CheckUpdatePic
 	if !(CheckUpdatePic = "ERROR")
 IniWrite, %CheckUpdatePic%, data\genConfig.ini, Setings, CheckUpdatePic
-
 	IniRead, AutoExitAHK, %FileVarImport%, Setings, AutoExitAHK
 	if !(AutoExitAHK = "ERROR")
 IniWrite, %AutoExitAHK%, data\genConfig.ini, Setings, AutoExitAHK
@@ -1522,11 +1576,6 @@ IniWrite, %Checkbox1vi4ersens%, data\genConfig.ini, Setings, Checkbox1vi4ersens
 	IniRead, Checkbox1animcancel, %FileVarImport%, Setings, Checkbox1animcancel
 	if !(Checkbox1animcancel = "ERROR")
 IniWrite, %Checkbox1animcancel%, data\genConfig.ini, Setings, Checkbox1animcancel
-
-	; IniRead, Checkbox1animcancelLock, %FileVarImport%, Setings, Checkbox1animcancelLock
-	; if !(Checkbox1animcancelLock = "ERROR")
-; IniWrite, %Checkbox1animcancelLock%, data\genConfig.ini, Setings, Checkbox1animcancelLock
-
 	IniRead, Checkbox1bhop, %FileVarImport%, Setings, Checkbox1bhop
 	if !(Checkbox1bhop = "ERROR")
 IniWrite, %Checkbox1bhop%, data\genConfig.ini, Setings, Checkbox1bhop
@@ -1554,8 +1603,6 @@ IniWrite, %RegeditExport5%, data\genConfig.ini, Setings, RegeditExport5
 	IniRead, GlLanguage, %FileVarImport%, Setings, GlLanguage
 	if !(GlLanguage = "ERROR")
 IniWrite, %GlLanguage%, data\genConfig.ini, Setings, GlLanguage
-
-
 	IniRead, key_LabelNumpad0, %FileVarImport%, Binds, key_LabelNumpad0
 	if !(key_LabelNumpad0 = "ERROR")
 IniWrite, %key_LabelNumpad0%, data\genConfig.ini, Binds, key_LabelNumpad0
@@ -1590,6 +1637,20 @@ IniWrite, %key_LabelNumpad9%, data\genConfig.ini, Binds, key_LabelNumpad9
 	if !(key_LabelNumpadAdd = "ERROR")
 IniWrite, %key_LabelNumpadAdd%, data\genConfig.ini, Binds, key_LabelNumpadAdd
 
+
+	IniRead, key_LabelANumpadAdd, %FileVarImport%, Binds, key_LabelANumpadAdd
+	if !(key_LabelANumpadAdd = "ERROR")
+IniWrite, %key_LabelANumpadAdd%, data\genConfig.ini, Binds, key_LabelANumpadAdd
+
+	IniRead, key_LabelNumpadSub, %FileVarImport%, Binds, key_LabelNumpadSub
+	if !(key_LabelNumpadSub = "ERROR")
+IniWrite, %key_LabelNumpadSub%, data\genConfig.ini, Binds, key_LabelNumpadSub
+
+	IniRead, key_LabelANumpadSub, %FileVarImport%, Binds, key_LabelANumpadSub
+	if !(key_LabelANumpadSub = "ERROR")
+IniWrite, %key_LabelANumpadSub%, data\genConfig.ini, Binds, key_LabelANumpadSub
+
+
 	IniRead, key_LabelANumpad0, %FileVarImport%, Binds, key_LabelANumpad0
 	if !(key_LabelANumpad0 = "ERROR")
 IniWrite, %key_LabelANumpad0%, data\genConfig.ini, Binds, key_LabelANumpad0
@@ -1621,8 +1682,67 @@ IniWrite, %key_LabelANumpad8%, data\genConfig.ini, Binds, key_LabelANumpad8
 	if !(key_LabelANumpad9 = "ERROR")
 IniWrite, %key_LabelANumpad9%, data\genConfig.ini, Binds, key_LabelANumpad9
 
+	IniRead, ExManualMode, %FileVarImport%, Expedition, ExManualMode
+	if !(ExManualMode = "ERROR")
+IniWrite, %ExManualMode%, data\genConfig.ini, Expedition, ExManualMode
+	IniRead, ExMondK1, %FileVarImport%, Expedition, ExMondK1
+	if !(ExMondK1 = "ERROR")
+IniWrite, %ExMondK1%, data\genConfig.ini, Expedition, ExMondK1
+	IniRead, ExMondK2, %FileVarImport%, Expedition, ExMondK2
+	if !(ExMondK2 = "ERROR")
+IniWrite, %ExMondK2%, data\genConfig.ini, Expedition, ExMondK2
+	IniRead, ExMondK3, %FileVarImport%, Expedition, ExMondK3
+	if !(ExMondK3 = "ERROR")
+IniWrite, %ExMondK3%, data\genConfig.ini, Expedition, ExMondK3
+	IniRead, ExMondK4, %FileVarImport%, Expedition, ExMondK4
+	if !(ExMondK4 = "ERROR")
+IniWrite, %ExMondK4%, data\genConfig.ini, Expedition, ExMondK4
+	IniRead, ExMondK5, %FileVarImport%, Expedition, ExMondK5
+	if !(ExMondK5 = "ERROR")
+IniWrite, %ExMondK5%, data\genConfig.ini, Expedition, ExMondK5
+	IniRead, ExMondK6, %FileVarImport%, Expedition, ExMondK6
+	if !(ExMondK6 = "ERROR")
+IniWrite, %ExMondK6%, data\genConfig.ini, Expedition, ExMondK6
+	IniRead, ExLiyK1, %FileVarImport%, Expedition, ExLiyK1
+	if !(ExLiyK1 = "ERROR")
+IniWrite, %ExLiyK1%, data\genConfig.ini, Expedition, ExLiyK1
+	IniRead, ExLiyK2, %FileVarImport%, Expedition, ExLiyK2
+	if !(ExLiyK2 = "ERROR")
+IniWrite, %ExLiyK2%, data\genConfig.ini, Expedition, ExLiyK2
+	IniRead, ExLiyK3, %FileVarImport%, Expedition, ExLiyK3
+	if !(ExLiyK3 = "ERROR")
+IniWrite, %ExLiyK3%, data\genConfig.ini, Expedition, ExLiyK3
+	IniRead, ExLiyK4, %FileVarImport%, Expedition, ExLiyK4
+	if !(ExLiyK4 = "ERROR")
+IniWrite, %ExLiyK4%, data\genConfig.ini, Expedition, ExLiyK4
+	IniRead, ExLiyK5, %FileVarImport%, Expedition, ExLiyK5
+	if !(ExLiyK5 = "ERROR")
+IniWrite, %ExLiyK5%, data\genConfig.ini, Expedition, ExLiyK5
+	IniRead, ExLiyK6, %FileVarImport%, Expedition, ExLiyK6
+	if !(ExLiyK6 = "ERROR")
+IniWrite, %ExLiyK6%, data\genConfig.ini, Expedition, ExLiyK6
+	IniRead, ExInaK1, %FileVarImport%, Expedition, ExInaK1
+	if !(ExInaK1 = "ERROR")
+IniWrite, %ExInaK1%, data\genConfig.ini, Expedition, ExInaK1
+	IniRead, ExInaK2, %FileVarImport%, Expedition, ExInaK2
+	if !(ExInaK2 = "ERROR")
+IniWrite, %ExInaK2%, data\genConfig.ini, Expedition, ExInaK2
+	IniRead, ExInaK3, %FileVarImport%, Expedition, ExInaK3
+	if !(ExInaK3 = "ERROR")
+IniWrite, %ExInaK3%, data\genConfig.ini, Expedition, ExInaK3
+	IniRead, ExInaK4, %FileVarImport%, Expedition, ExInaK4
+	if !(ExInaK4 = "ERROR")
+IniWrite, %ExInaK4%, data\genConfig.ini, Expedition, ExInaK4
+	IniRead, ExInaK5, %FileVarImport%, Expedition, ExInaK5
+	if !(ExInaK5 = "ERROR")
+IniWrite, %ExInaK5%, data\genConfig.ini, Expedition, ExInaK5
+	IniRead, ExInaK6, %FileVarImport%, Expedition, ExInaK6
+	if !(ExInaK6 = "ERROR")
+IniWrite, %ExInaK6%, data\genConfig.ini, Expedition, ExInaK6
 
-
+	IniRead, TTimerahk1, %FileVarImport%, Setings, TTimerahk1
+	if !(TTimerahk1 = "ERROR")
+IniWrite, %TTimerahk1%, data\genConfig.ini, Setings, TTimerahk1
 
 
 	Reload
@@ -1649,6 +1769,9 @@ return
 Metkashortcut2:
 Gui, 1: Submit, NoHide
 FileCreateShortcut, %EditDir%\Genshin Impact Game\GenshinImpact.exe, %A_Desktop%\Genshin Windowed mode.lnk,,-popupwindow,Borderless windowed mode
+return
+Metkashortcut3:
+FileCreateShortcut, %A_ScriptDir%\data\ReshadeInstal.ahk, %A_Desktop%\Genshi ReShade.lnk,,,ReShade loader, %A_ScriptDir%\data\resico.ico
 return
 
 
@@ -1688,7 +1811,6 @@ ToolTip, Отладка: Перезапись dxgi.dll, 0, 0
 ToolTip, Отладка: Меняем имя dxgi.dll, 0, 0
 FileMove, %EditDir%\Genshin Impact Game\dxgi.dll, %EditDir%\Genshin Impact Game\dxgi.dll.temp, 1
 SoundPlay, %A_ScriptDir%\data\zplop.wav
-; SoundBeep
 sleep 500
 ToolTip
 return
@@ -1707,22 +1829,6 @@ FileCopy, data\reshade\ReShade.ini, %EditDir%\Genshin Impact Game, 1
 SoundPlay, %A_ScriptDir%\data\zinecraft_pick_u.wav
 return
 
-1FreestyleInstal:
-MsgBox 0x1, ,Nvidia Freestyle Ansel instal?
-IfMsgBox OK, {
-} Else IfMsgBox Cancel, {
-Return
-}
-IfNotExist, C:\Program Files\NVIDIA Corporation\Ansel
-FileCreateDir, C:\Program Files\NVIDIA Corporation\Ansel
-FileCopy, data\ShadersAndTextures\*.*, C:\Program Files\NVIDIA Corporation\Ansel, 1
-SoundPlay, %A_ScriptDir%\data\zinecraft_pick_u.wav
-Return
-
-
-
-
-
 1ReshadeRemove:
 MsgBox 0x1, ,Reshade Remove?
 IfMsgBox OK, {
@@ -1735,12 +1841,23 @@ FileDelete, %EditDir%\Genshin Impact Game\ReShade.ini
 FileDelete, %EditDir%\Genshin Impact Game\dxgi.dll.temp
 FileDelete, %EditDir%\Genshin Impact Game\dxgi.dll
 FileDelete, %EditDir%\Genshin Impact Game\dxgi.log
+FileDelete, %EditDir%\Genshin Impact Game\ReShade.log
 FileRemoveDir, %EditDir%\Genshin Impact Game\Preset, 1
 FileRemoveDir, %EditDir%\Genshin Impact Game\reshade-shaders, 1
 SoundPlay, %A_ScriptDir%\data\zinecraft_pick_u.wav
 return
 
-
+1FreestyleInstal:
+MsgBox 0x1, ,Nvidia Freestyle Ansel instal?
+IfMsgBox OK, {
+} Else IfMsgBox Cancel, {
+Return
+}
+IfNotExist, C:\Program Files\NVIDIA Corporation\Ansel
+FileCreateDir, C:\Program Files\NVIDIA Corporation\Ansel
+FileCopy, data\ShadersAndTextures\*.*, C:\Program Files\NVIDIA Corporation\Ansel, 1
+SoundPlay, %A_ScriptDir%\data\zinecraft_pick_u.wav
+Return
 
 1pickreg1:
 IfWinExist, %gameexe1337%
@@ -2096,7 +2213,7 @@ return
 
 
 
-;===============================Банихоп
+;===============================Банихоп бхоп
 Metkakey_bhop:
 sleep 1
 IfWinActive, %gameexe1337%		;ahk_exe GenshinImpact.exe
@@ -2112,17 +2229,17 @@ Sleep 50
 }
 Loop
 {
-    GetKeyState, SpaceVar1, vk20, P
-    If SpaceVar1 = U
+    GetKeyState, xSpaceVar1, sc39, P
+    If xSpaceVar1 = U
         break
 
-	SendInput {vk20 Down}
-	Sleep 15
-	SendInput {vk20 up}
-	; multisendinput("vk20", "", "vk20", "", "0x20", "0", "", "") 	;Space vk20
+	; SendInput {sc39 Down}
+	; Sleep 15
+	; SendInput {sc39 up}
+	multisendinput("vk20", "", "vk20", "", "0x20", "0", "", "") 	;Space vk20
 	if ScRandomT
 	Random, SuperGlobalVarRan,1,15
-	Sleep 30 + SuperGlobalVarRan
+	Sleep 40 + SuperGlobalVarRan
 
 }
 }
@@ -2249,6 +2366,14 @@ Gui, 99: Cancel
 return
 ;===============================Закрыть Оверлей на Esc
 *~$Escape::
+;=остановить Мону
+Pereklu4atelFis1337:=0
+;=остановить Кею
+ffPereklu4atelFis1337:=0
+;=остановить Остановить готовку
+Pereklu4atelcocking555:=0
+;=остановить экспедиции
+expeditionVar:=0
 if (overlay1toggle)
 {
 WinMaximize %gameexe1337%
@@ -2274,24 +2399,24 @@ if FIXchat
 }
 Loop
 {
-    GetKeyState, SpaceVar2, %key_fastlyt%, P
-    If SpaceVar2 = U
+    GetKeyState, SpaVar2, %key_fastlyt%, P
+    If SpaVar2 = U
         break 
-	if ScRandomT
-	{
-	Random, RandomVarSc, 15, 40
-	sleep %RandomVarSc%
-	}
-	SendInput {vk46 Down}
-	Sleep 15
-	SendInput {vk46 up}
-	; multisendinput("sc21", "", "sc21", "", "0x46", "0", "", "") 	;F
-    Sleep 25
-	if ScRandomT
-	{
-	Random, RandomVarSc, 15, 40
-	sleep %RandomVarSc%
-	}
+		if ScRandomT
+		{
+		Random, RandomVarSc, 15, 40
+		sleep %RandomVarSc%
+		}
+	; SendInput {sc21 Down}
+	; Sleep 15
+	; SendInput {sc21 up}
+	multisendinput("sc21", "", "sc21", "", "0x46", "0", "", "") 	;F
+    Sleep 35
+		if ScRandomT
+		{
+		Random, RandomVarSc, 15, 40
+		sleep %RandomVarSc%
+		}
 	SendInput, {Blind}{WheelDown}
 }
 }
@@ -2442,6 +2567,11 @@ jopa17:=false
 jopa18:=false
 jopa19:=false
 jopa20:=false
+jopa21:=false
+jopa22:=false
+jopa23:=false
+jopa24:=false
+jopa25:=false
 if showtooltipVvoba
 {
 ToolTip, AutoAttack, 0, 0
@@ -2472,6 +2602,11 @@ jopa17:=false
 jopa18:=false
 jopa19:=false
 jopa20:=false
+jopa21:=false
+jopa22:=false
+jopa23:=false
+jopa24:=false
+jopa25:=false
 if showtooltipVvoba
 {
 ToolTip, Ningguang, 0, 0
@@ -2502,6 +2637,11 @@ jopa17:=false
 jopa18:=false
 jopa19:=false
 jopa20:=false
+jopa21:=false
+jopa22:=false
+jopa23:=false
+jopa24:=false
+jopa25:=false
 if showtooltipVvoba
 {
 ToolTip, Yoimiya N1RR, 0, 0
@@ -2532,6 +2672,11 @@ jopa17:=false
 jopa18:=false
 jopa19:=false
 jopa20:=false
+jopa21:=false
+jopa22:=false
+jopa23:=false
+jopa24:=false
+jopa25:=false
 if showtooltipVvoba
 {
 ToolTip, Amber+Fish MachineGun, 0, 0
@@ -2562,6 +2707,11 @@ jopa17:=false
 jopa18:=false
 jopa19:=false
 jopa20:=false
+jopa21:=false
+jopa22:=false
+jopa23:=false
+jopa24:=false
+jopa25:=false
 if showtooltipVvoba
 {
 ToolTip, Venti+Ganyu MachineGun, 0, 0
@@ -2592,6 +2742,11 @@ jopa17:=false
 jopa18:=false
 jopa19:=false
 jopa20:=false
+jopa21:=false
+jopa22:=false
+jopa23:=false
+jopa24:=false
+jopa25:=false
 if showtooltipVvoba
 {
 ToolTip, Legit Bow, 0, 0
@@ -2622,6 +2777,11 @@ jopa17:=false
 jopa18:=false
 jopa19:=false
 jopa20:=false
+jopa21:=false
+jopa22:=false
+jopa23:=false
+jopa24:=false
+jopa25:=false
 if showtooltipVvoba
 {
 ToolTip, Diluc+Beidou DragonStrike, 0, 0
@@ -2652,6 +2812,11 @@ jopa17:=false
 jopa18:=false
 jopa19:=false
 jopa20:=false
+jopa21:=false
+jopa22:=false
+jopa23:=false
+jopa24:=false
+jopa25:=false
 if showtooltipVvoba
 {
 ToolTip, Hu Tao N2CJ (slow), 0, 0
@@ -2682,6 +2847,11 @@ jopa17:=false
 jopa18:=false
 jopa19:=false
 jopa20:=false
+jopa21:=false
+jopa22:=false
+jopa23:=false
+jopa24:=false
+jopa25:=false
 if showtooltipVvoba
 {
 ToolTip, Hu Tao H1CJ, 0, 0
@@ -2713,6 +2883,11 @@ jopa17:=false
 jopa18:=false
 jopa19:=false
 jopa20:=false
+jopa21:=false
+jopa22:=false
+jopa23:=false
+jopa24:=false
+jopa25:=false
 if showtooltipVvoba
 {
 ToolTip, Hu Tao N2CJ (fast), 0, 0
@@ -2743,6 +2918,11 @@ jopa17:=false
 jopa18:=false
 jopa19:=false
 jopa20:=false
+jopa21:=false
+jopa22:=false
+jopa23:=false
+jopa24:=false
+jopa25:=false
 if showtooltipVvoba
 {
 ToolTip, Klee N1CJ, 0, 0
@@ -2773,6 +2953,11 @@ jopa17:=false
 jopa18:=false
 jopa19:=false
 jopa20:=false
+jopa21:=false
+jopa22:=false
+jopa23:=false
+jopa24:=false
+jopa25:=false
 if showtooltipVvoba
 {
 ToolTip, Klee N2H1, 0, 0
@@ -2803,6 +2988,11 @@ jopa17:=false
 jopa18:=false
 jopa19:=false
 jopa20:=false
+jopa21:=false
+jopa22:=false
+jopa23:=false
+jopa24:=false
+jopa25:=false
 if showtooltipVvoba
 {
 ToolTip, Klee AutoAttack, 0, 0
@@ -2833,6 +3023,11 @@ jopa17:=false
 jopa18:=false
 jopa19:=false
 jopa20:=false
+jopa21:=false
+jopa22:=false
+jopa23:=false
+jopa24:=false
+jopa25:=false
 if showtooltipVvoba
 {
 ToolTip, Xiao N1H1Plunge, 0, 0
@@ -2863,6 +3058,11 @@ jopa17:=false
 jopa18:=false
 jopa19:=false
 jopa20:=false
+jopa21:=false
+jopa22:=false
+jopa23:=false
+jopa24:=false
+jopa25:=false
 if showtooltipVvoba
 {
 ToolTip, Xiao SpamPlunge, 0, 0
@@ -2893,6 +3093,11 @@ jopa17:=false
 jopa18:=false
 jopa19:=false
 jopa20:=false
+jopa21:=false
+jopa22:=false
+jopa23:=false
+jopa24:=false
+jopa25:=false
 if showtooltipVvoba
 {
 ToolTip, Xiao N1SpamPlunge, 0, 0
@@ -2923,6 +3128,11 @@ jopa17:=true
 jopa18:=false
 jopa19:=false
 jopa20:=false
+jopa21:=false
+jopa22:=false
+jopa23:=false
+jopa24:=false
+jopa25:=false
 if showtooltipVvoba
 {
 ToolTip, Ganyu Hold (Test 1), 0, 0
@@ -2953,6 +3163,11 @@ jopa17:=false
 jopa18:=true
 jopa19:=false
 jopa20:=false
+jopa21:=false
+jopa22:=false
+jopa23:=false
+jopa24:=false
+jopa25:=false
 if showtooltipVvoba
 {
 ToolTip, Ganyu Hold (Test 2), 0, 0
@@ -2983,6 +3198,11 @@ jopa17:=false
 jopa18:=false
 jopa19:=true
 jopa20:=false
+jopa21:=false
+jopa22:=false
+jopa23:=false
+jopa24:=false
+jopa25:=false
 if showtooltipVvoba
 {
 ToolTip, Swimming, 0, 0
@@ -3012,6 +3232,11 @@ jopa17:=false
 jopa18:=false
 jopa19:=false
 jopa20:=true
+jopa21:=false
+jopa22:=false
+jopa23:=false
+jopa24:=false
+jopa25:=false
 if showtooltipVvoba
 {
 ToolTip, Collection of expedition, 0, 0
@@ -3019,9 +3244,108 @@ sleep 500
 ToolTip
 }
 Return
-
-
-
+;===============================Mona infinite swimming (дабл клик вкл, сингл клик выкл)
+LabelANumpadAdd:
+jopa1:=false
+jopa2:=false
+jopa3:=false
+jopa4:=false
+jopa5:=false
+jopa6:=false
+jopa7:=false
+jopa8:=false
+jopa9:=false
+jopa10:=false
+jopa11:=false
+jopa12:=false
+jopa13:=false
+jopa14:=false
+jopa15:=false
+jopa16:=false
+jopa17:=false
+jopa18:=false
+jopa19:=false
+jopa20:=false
+jopa21:=true
+jopa22:=false
+jopa23:=false
+jopa24:=false
+jopa25:=false
+if showtooltipVvoba
+{
+ToolTip, Mona infinite swimming, 0, 0
+sleep 500
+ToolTip
+}
+Return
+;===============================Kaeya seafarer (дабл клик вкл, сингл клик выкл)
+LabelNumpadSub:
+jopa1:=false
+jopa2:=false
+jopa3:=false
+jopa4:=false
+jopa5:=false
+jopa6:=false
+jopa7:=false
+jopa8:=false
+jopa9:=false
+jopa10:=false
+jopa11:=false
+jopa12:=false
+jopa13:=false
+jopa14:=false
+jopa15:=false
+jopa16:=false
+jopa17:=false
+jopa18:=false
+jopa19:=false
+jopa20:=false
+jopa21:=false
+jopa22:=true
+jopa23:=false
+jopa24:=false
+jopa25:=false
+if showtooltipVvoba
+{
+ToolTip, Kaeya seafarer, 0, 0
+sleep 500
+ToolTip
+}
+Return
+;===============================Auto coсking (дабл клик вкл, сингл клик выкл)
+LabelANumpadSub:
+jopa1:=false
+jopa2:=false
+jopa3:=false
+jopa4:=false
+jopa5:=false
+jopa6:=false
+jopa7:=false
+jopa8:=false
+jopa9:=false
+jopa10:=false
+jopa11:=false
+jopa12:=false
+jopa13:=false
+jopa14:=false
+jopa15:=false
+jopa16:=false
+jopa17:=false
+jopa18:=false
+jopa19:=false
+jopa20:=false
+jopa21:=false
+jopa22:=false
+jopa23:=true
+jopa24:=false
+jopa25:=false
+if showtooltipVvoba
+{
+ToolTip, Auto coсking, 0, 0
+sleep 500
+ToolTip
+}
+Return
 
 
 
@@ -4166,12 +4490,37 @@ if FIXchat
 }
 IfWinActive, %gameexe1337%
 {
+	if !(ExManualMode)
+	{
+	ExMondK1=1
+	ExMondK2=1
+	ExMondK3=1
+	ExMondK4=1
+	ExMondK5=1
+	ExMondK6=1
+	ExLiyK1=1
+	ExLiyK2=1
+	ExLiyK3=1
+	ExLiyK4=1
+	ExLiyK5=1
+	ExLiyK6=1
+	ExInaK1=1
+	ExInaK2=1
+	ExInaK3=1
+	ExInaK4=1
+	ExInaK5=1
+	ExInaK6=1
+	}
+		expeditionVar:=1
 		SleepVar:=200
-		
+	if ExMondK1 or ExMondK2 or ExMondK3 or ExMondK4 or ExMondK5 or ExMondK6
+	{
 		ClickVarX:=Round(A_ScreenWidth * 0.04688), ClickVarY:=Round(A_ScreenHeight * 0.14931)
 		Click, %ClickVarX%, %ClickVarY% 	;мондштад
 		sleep %SleepVar%
 		;====================== начало 1 метки
+		if ExMondK1
+		{
 		ClickVarX:=Round(A_ScreenWidth * 0.29375), ClickVarY:=Round(A_ScreenHeight * 0.37431)
 		Click, %ClickVarX%, %ClickVarY%  	;мондштад 1 метка
 		sleep %SleepVar%
@@ -4205,8 +4554,10 @@ IfWinActive, %gameexe1337%
 		ClickVarX:=Round(A_ScreenWidth * 0.48047), ClickVarY:=Round(A_ScreenHeight * 0.70000)
 		Click, %ClickVarX%, %ClickVarY%  	;отмена
 		sleep %SleepVar%
-		
+		}
 ;====================================================фильтр сброса
+		if !(expeditionVar)
+		Return
 		IfWinNotActive, %gameexe1337%
 		Return
 		if FIXchat
@@ -4219,8 +4570,10 @@ IfWinActive, %gameexe1337%
 			if (Result1337 = 0)
 				Return
 		}
-		;====================== конец 1 метки
+
 		;====================== начало 2 метки
+		if ExMondK2
+		{
 		ClickVarX:=Round(A_ScreenWidth * 0.38555), ClickVarY:=Round(A_ScreenHeight * 0.49167)
 		Click, %ClickVarX%, %ClickVarY%  	;мондштад 2 метка
 		sleep %SleepVar%
@@ -4254,8 +4607,10 @@ IfWinActive, %gameexe1337%
 		ClickVarX:=Round(A_ScreenWidth * 0.48047), ClickVarY:=Round(A_ScreenHeight * 0.70000)
 		Click, %ClickVarX%, %ClickVarY%  	;отмена
 		sleep %SleepVar%
-
+		}
 ;====================================================фильтр сброса
+		if !(expeditionVar)
+		Return
 		IfWinNotActive, %gameexe1337%
 		Return
 		if FIXchat
@@ -4268,8 +4623,10 @@ IfWinActive, %gameexe1337%
 			if (Result1337 = 0)
 				Return
 		}
-		;====================== конец 2 метки
+
 		;====================== начало 3 метки
+		if ExMondK3
+		{
 		ClickVarX:=Round(A_ScreenWidth * 0.42344), ClickVarY:=Round(A_ScreenHeight * 0.22569)
 		Click, %ClickVarX%, %ClickVarY% 	;мондштад 3 метка
 		sleep %SleepVar%
@@ -4303,8 +4660,10 @@ IfWinActive, %gameexe1337%
 		ClickVarX:=Round(A_ScreenWidth * 0.48047), ClickVarY:=Round(A_ScreenHeight * 0.70000)
 		Click, %ClickVarX%, %ClickVarY%  	;отмена
 		sleep %SleepVar%
-		
+		}
 ;====================================================фильтр сброса
+		if !(expeditionVar)
+		Return
 		IfWinNotActive, %gameexe1337%
 		Return
 		if FIXchat
@@ -4317,8 +4676,10 @@ IfWinActive, %gameexe1337%
 			if (Result1337 = 0)
 				Return
 		}
-		;====================== конец 3 метки
+
 		;====================== начало 4 метки
+		if ExMondK4
+		{
 		ClickVarX:=Round(A_ScreenWidth * 0.54805), ClickVarY:=Round(A_ScreenHeight * 0.30417)
 		Click, %ClickVarX%, %ClickVarY% 
 		sleep %SleepVar%
@@ -4352,8 +4713,10 @@ IfWinActive, %gameexe1337%
 		ClickVarX:=Round(A_ScreenWidth * 0.48047), ClickVarY:=Round(A_ScreenHeight * 0.70000)
 		Click, %ClickVarX%, %ClickVarY%  	;отмена
 		sleep %SleepVar%
-		
+		}
 ;====================================================фильтр сброса
+		if !(expeditionVar)
+		Return
 		IfWinNotActive, %gameexe1337%
 		Return
 		if FIXchat
@@ -4366,8 +4729,10 @@ IfWinActive, %gameexe1337%
 			if (Result1337 = 0)
 				Return
 		}
-		;====================== конец 4 метки
+
 		;====================== начало 5 метки
+		if ExMondK5
+		{
 		ClickVarX:=Round(A_ScreenWidth * 0.58320), ClickVarY:=Round(A_ScreenHeight * 0.41736)
 		Click, %ClickVarX%, %ClickVarY% 
 		sleep %SleepVar%
@@ -4401,8 +4766,10 @@ IfWinActive, %gameexe1337%
 		ClickVarX:=Round(A_ScreenWidth * 0.48047), ClickVarY:=Round(A_ScreenHeight * 0.70000)
 		Click, %ClickVarX%, %ClickVarY%  	;отмена
 		sleep %SleepVar%
-		
+		}
 ;====================================================фильтр сброса
+		if !(expeditionVar)
+		Return
 		IfWinNotActive, %gameexe1337%
 		Return
 		if FIXchat
@@ -4415,8 +4782,10 @@ IfWinActive, %gameexe1337%
 			if (Result1337 = 0)
 				Return
 		}
-		;====================== конец 5 метки
+
 		;====================== начало 6 метки
+		if ExMondK6
+		{
 		ClickVarX:=Round(A_ScreenWidth * 0.61055), ClickVarY:=Round(A_ScreenHeight * 0.60417)
 		Click, %ClickVarX%, %ClickVarY% 
 		sleep %SleepVar%
@@ -4450,9 +4819,12 @@ IfWinActive, %gameexe1337%
 		ClickVarX:=Round(A_ScreenWidth * 0.48047), ClickVarY:=Round(A_ScreenHeight * 0.70000)
 		Click, %ClickVarX%, %ClickVarY%  	;отмена
 		sleep %SleepVar%
-		;====================== конец 6 метки
+		}
+	}
 		
 ;====================================================фильтр сброса
+		if !(expeditionVar)
+		Return
 		IfWinNotActive, %gameexe1337%
 		Return
 		if FIXchat
@@ -4465,11 +4837,14 @@ IfWinActive, %gameexe1337%
 			if (Result1337 = 0)
 				Return
 		}
-		
+	if ExLiyK1 or ExLiyK2 or ExLiyK3 or ExLiyK4 or ExLiyK5 or ExLiyK6
+	{
 		ClickVarX:=Round(A_ScreenWidth * 0.05195), ClickVarY:=Round(A_ScreenHeight * 0.21875)
 		Click, %ClickVarX%, %ClickVarY%  	;лиюэ
 		sleep %SleepVar%
 		;====================== начало 1 метки
+		if ExLiyK1
+		{
 		ClickVarX:=Round(A_ScreenWidth * 0.29297), ClickVarY:=Round(A_ScreenHeight * 0.51944)
 		Click, %ClickVarX%, %ClickVarY% 
 		sleep %SleepVar%
@@ -4503,8 +4878,10 @@ IfWinActive, %gameexe1337%
 		ClickVarX:=Round(A_ScreenWidth * 0.48047), ClickVarY:=Round(A_ScreenHeight * 0.70000)
 		Click, %ClickVarX%, %ClickVarY%  	;отмена
 		sleep %SleepVar%
-		
+		}
 ;====================================================фильтр сброса
+		if !(expeditionVar)
+		Return
 		IfWinNotActive, %gameexe1337%
 		Return
 		if FIXchat
@@ -4518,6 +4895,8 @@ IfWinActive, %gameexe1337%
 				Return
 		}
 		;====================== начало 2 метки
+		if ExLiyK2
+		{
 		ClickVarX:=Round(A_ScreenWidth * 0.37734), ClickVarY:=Round(A_ScreenHeight * 0.30278)
 		Click, %ClickVarX%, %ClickVarY% 
 		sleep %SleepVar%
@@ -4551,8 +4930,10 @@ IfWinActive, %gameexe1337%
 		ClickVarX:=Round(A_ScreenWidth * 0.48047), ClickVarY:=Round(A_ScreenHeight * 0.70000)
 		Click, %ClickVarX%, %ClickVarY%  	;отмена
 		sleep %SleepVar%
-		
+		}
 ;====================================================фильтр сброса
+		if !(expeditionVar)
+		Return
 		IfWinNotActive, %gameexe1337%
 		Return
 		if FIXchat
@@ -4566,6 +4947,8 @@ IfWinActive, %gameexe1337%
 				Return
 		}
 		;====================== начало 3 метки
+		if ExLiyK3
+		{
 		ClickVarX:=Round(A_ScreenWidth * 0.37930), ClickVarY:=Round(A_ScreenHeight * 0.75486)
 		Click, %ClickVarX%, %ClickVarY% 
 		sleep %SleepVar%
@@ -4599,8 +4982,10 @@ IfWinActive, %gameexe1337%
 		ClickVarX:=Round(A_ScreenWidth * 0.48047), ClickVarY:=Round(A_ScreenHeight * 0.70000)
 		Click, %ClickVarX%, %ClickVarY%  	;отмена
 		sleep %SleepVar%
-		
+		}
 ;====================================================фильтр сброса
+		if !(expeditionVar)
+		Return
 		IfWinNotActive, %gameexe1337%
 		Return
 		if FIXchat
@@ -4614,6 +4999,8 @@ IfWinActive, %gameexe1337%
 				Return
 		}
 		;====================== начало 4 метки
+		if ExLiyK4
+		{
 		ClickVarX:=Round(A_ScreenWidth * 0.42070), ClickVarY:=Round(A_ScreenHeight * 0.51667)
 		Click, %ClickVarX%, %ClickVarY% 
 		sleep %SleepVar%
@@ -4647,8 +5034,10 @@ IfWinActive, %gameexe1337%
 		ClickVarX:=Round(A_ScreenWidth * 0.48047), ClickVarY:=Round(A_ScreenHeight * 0.70000)
 		Click, %ClickVarX%, %ClickVarY%  	;отмена
 		sleep %SleepVar%
-		
+		}
 ;====================================================фильтр сброса
+		if !(expeditionVar)
+		Return
 		IfWinNotActive, %gameexe1337%
 		Return
 		if FIXchat
@@ -4662,6 +5051,8 @@ IfWinActive, %gameexe1337%
 				Return
 		}
 		;====================== начало 5 метки
+		if ExLiyK5
+		{
 		ClickVarX:=Round(A_ScreenWidth * 0.49883), ClickVarY:=Round(A_ScreenHeight * 0.41458)
 		Click, %ClickVarX%, %ClickVarY% 
 		sleep %SleepVar%
@@ -4695,8 +5086,10 @@ IfWinActive, %gameexe1337%
 		ClickVarX:=Round(A_ScreenWidth * 0.48047), ClickVarY:=Round(A_ScreenHeight * 0.70000)
 		Click, %ClickVarX%, %ClickVarY%  	;отмена
 		sleep %SleepVar%
-		
+		}
 ;====================================================фильтр сброса
+		if !(expeditionVar)
+		Return
 		IfWinNotActive, %gameexe1337%
 		Return
 		if FIXchat
@@ -4710,6 +5103,8 @@ IfWinActive, %gameexe1337%
 				Return
 		}
 		;====================== начало 6 метки
+		if ExLiyK6
+		{
 		ClickVarX:=Round(A_ScreenWidth * 0.61016), ClickVarY:=Round(A_ScreenHeight * 0.56806)
 		Click, %ClickVarX%, %ClickVarY% 
 		sleep %SleepVar%
@@ -4743,8 +5138,11 @@ IfWinActive, %gameexe1337%
 		ClickVarX:=Round(A_ScreenWidth * 0.48047), ClickVarY:=Round(A_ScreenHeight * 0.70000)
 		Click, %ClickVarX%, %ClickVarY%  	;отмена
 		sleep %SleepVar%
-		
+		}
+	}
 ;====================================================фильтр сброса
+		if !(expeditionVar)
+		Return
 		IfWinNotActive, %gameexe1337%
 		Return
 		if FIXchat
@@ -4757,11 +5155,14 @@ IfWinActive, %gameexe1337%
 			if (Result1337 = 0)
 				Return
 		}
-		
+	if ExInaK1 or ExInaK2 or ExInaK3 or ExInaK4 or ExInaK5 or ExInaK6
+	{
 		ClickVarX:=Round(A_ScreenWidth * 0.05117), ClickVarY:=Round(A_ScreenHeight * 0.28403)
 		Click, %ClickVarX%, %ClickVarY%  	;инадзуа
 		sleep %SleepVar%
 		;====================== начало 1 метки
+		if ExInaK1
+		{
 		ClickVarX:=Round(A_ScreenWidth * 0.30469), ClickVarY:=Round(A_ScreenHeight * 0.74306)
 		Click, %ClickVarX%, %ClickVarY% 
 		sleep %SleepVar%
@@ -4795,8 +5196,10 @@ IfWinActive, %gameexe1337%
 		ClickVarX:=Round(A_ScreenWidth * 0.48047), ClickVarY:=Round(A_ScreenHeight * 0.70000)
 		Click, %ClickVarX%, %ClickVarY%  	;отмена
 		sleep %SleepVar%
-		
+		}
 ;====================================================фильтр сброса
+		if !(expeditionVar)
+		Return
 		IfWinNotActive, %gameexe1337%
 		Return
 		if FIXchat
@@ -4810,6 +5213,8 @@ IfWinActive, %gameexe1337%
 				Return
 		}
 		;====================== начало 2 метки
+		if ExInaK2
+		{
 		ClickVarX:=Round(A_ScreenWidth * 0.37773), ClickVarY:=Round(A_ScreenHeight * 0.64236)
 		Click, %ClickVarX%, %ClickVarY% 
 		sleep %SleepVar%
@@ -4843,8 +5248,10 @@ IfWinActive, %gameexe1337%
 		ClickVarX:=Round(A_ScreenWidth * 0.48047), ClickVarY:=Round(A_ScreenHeight * 0.70000)
 		Click, %ClickVarX%, %ClickVarY%  	;отмена
 		sleep %SleepVar%
-		
+		}
 ;====================================================фильтр сброса
+		if !(expeditionVar)
+		Return
 		IfWinNotActive, %gameexe1337%
 		Return
 		if FIXchat
@@ -4858,6 +5265,8 @@ IfWinActive, %gameexe1337%
 				Return
 		}
 		;====================== начало 3 метки
+		if ExInaK3
+		{
 		ClickVarX:=Round(A_ScreenWidth * 0.43086), ClickVarY:=Round(A_ScreenHeight * 0.76458)
 		Click, %ClickVarX%, %ClickVarY% 
 		sleep %SleepVar%
@@ -4891,8 +5300,10 @@ IfWinActive, %gameexe1337%
 		ClickVarX:=Round(A_ScreenWidth * 0.48047), ClickVarY:=Round(A_ScreenHeight * 0.70000)
 		Click, %ClickVarX%, %ClickVarY%  	;отмена
 		sleep %SleepVar%
-		
+		}
 ;====================================================фильтр сброса
+		if !(expeditionVar)
+		Return
 		IfWinNotActive, %gameexe1337%
 		Return
 		if FIXchat
@@ -4906,6 +5317,8 @@ IfWinActive, %gameexe1337%
 				Return
 		}
 		;====================== начало 4 метки
+		if ExInaK4
+		{
 		ClickVarX:=Round(A_ScreenWidth * 0.48750), ClickVarY:=Round(A_ScreenHeight * 0.31806)
 		Click, %ClickVarX%, %ClickVarY% 
 		sleep %SleepVar%
@@ -4939,8 +5352,10 @@ IfWinActive, %gameexe1337%
 		ClickVarX:=Round(A_ScreenWidth * 0.48047), ClickVarY:=Round(A_ScreenHeight * 0.70000)
 		Click, %ClickVarX%, %ClickVarY%  	;отмена
 		sleep %SleepVar%
-		
+		}
 ;====================================================фильтр сброса
+		if !(expeditionVar)
+		Return
 		IfWinNotActive, %gameexe1337%
 		Return
 		if FIXchat
@@ -4954,6 +5369,8 @@ IfWinActive, %gameexe1337%
 				Return
 		}
 		;====================== начало 5 метки
+		if ExInaK5
+		{
 		ClickVarX:=Round(A_ScreenWidth * 0.57188), ClickVarY:=Round(A_ScreenHeight * 0.25486)
 		Click, %ClickVarX%, %ClickVarY% 
 		sleep %SleepVar%
@@ -4987,8 +5404,10 @@ IfWinActive, %gameexe1337%
 		ClickVarX:=Round(A_ScreenWidth * 0.48047), ClickVarY:=Round(A_ScreenHeight * 0.70000)
 		Click, %ClickVarX%, %ClickVarY%  	;отмена
 		sleep %SleepVar%
-		
+		}
 ;====================================================фильтр сброса
+		if !(expeditionVar)
+		Return
 		IfWinNotActive, %gameexe1337%
 		Return
 		if FIXchat
@@ -5002,6 +5421,8 @@ IfWinActive, %gameexe1337%
 				Return
 		}
 		;====================== начало 6 метки
+		if ExInaK6
+		{
 		ClickVarX:=Round(A_ScreenWidth * 0.59766), ClickVarY:=Round(A_ScreenHeight * 0.40139)
 		Click, %ClickVarX%, %ClickVarY% 
 		sleep %SleepVar%
@@ -5035,14 +5456,305 @@ IfWinActive, %gameexe1337%
 		ClickVarX:=Round(A_ScreenWidth * 0.48047), ClickVarY:=Round(A_ScreenHeight * 0.70000)
 		Click, %ClickVarX%, %ClickVarY%  	;отмена
 		sleep %SleepVar%
+		}
+	}
 		ClickVarX:=Round(A_ScreenWidth * 0.95859), ClickVarY:=Round(A_ScreenHeight * 0.04375)
 		Click, %ClickVarX%, %ClickVarY%  	;выход
+}
+}
 
+
+if jopa21 							;Alt + NumpadAdd - Mona infinite swimming (дабл клик вкл, сингл клик выкл)
+{
+if FIXchat
+{
+	StructSize1337 := A_PtrSize + 16
+	VarSetCapacity(InfoStruct1337, StructSize1337)
+	NumPut(StructSize1337, InfoStruct1337)
+	DllCall("GetCursorInfo", UInt, &InfoStruct1337)
+	Result1337 := NumGet(InfoStruct1337, 8)
+	if (Result1337 <> 0) 			;если размер курсора больше 0 то мы в чате и скрипт не нажимает кнопки
+		Return
+}
+IfWinActive, %gameexe1337%
+{
+Goto, MyLabel228keya
+}
+}
+
+
+if jopa22 							;NumpadAdd - Kaeya voyager (дабл клик вкл, сингл клик выкл)
+{
+if FIXchat
+{
+	StructSize1337 := A_PtrSize + 16
+	VarSetCapacity(InfoStruct1337, StructSize1337)
+	NumPut(StructSize1337, InfoStruct1337)
+	DllCall("GetCursorInfo", UInt, &InfoStruct1337)
+	Result1337 := NumGet(InfoStruct1337, 8)
+	if (Result1337 <> 0) 			;если размер курсора больше 0 то мы в чате и скрипт не нажимает кнопки
+		Return
+}
+IfWinActive, %gameexe1337%
+{
+Goto, ffMyLabel228keya
+}
+}
+
+if jopa23 							;Alt + NumpadAdd - Auto coсking (дабл клик вкл, сингл клик выкл)
+{
+IfWinActive, %gameexe1337%
+{
+zX1Fis := round(A_ScreenWidth * (650 / 2560))
+zY1Fis := round(A_ScreenHeight * (900 / 1440))
+zX2Fis := round(A_ScreenWidth * (1920 / 2560))
+zY2Fis := round(A_ScreenHeight * (1250 / 1440))
+Goto, Metkakeycocking228
 }
 }
 
 return
 
+;================================================Auto coсking автоготовка
+#UseHook, On
+metka555kli1:
+  SetTimer, metkakli555start, off
+  Pereklu4atelcocking555 = 0
+  sleep 200
+  Tooltip,,0,0,2
+Return
+metkakli2555:
+  SetTimer, metkakli555start, on
+  Tooltip Auto coсking,round(A_ScreenWidth * .5 - 50),0,2
+Return
+#UseHook, Off
+Metkakeycocking228:
+  z5Pause_=300     ; настройки
+  If not z5Second
+  {
+    z5Second=1
+    SetTimer, z5DoublePress, -%z5Pause_%
+  }
+  Else
+  {
+    z5Second=0
+    SetTimer, metkakli2555, -1
+  }
+Return
+z5DoublePress:
+  If not z5Second
+    Return
+  z5Second=0
+  SetTimer, metka555kli1, -1
+Return
+
+metkakli555start:
+Pereklu4atelcocking555 = 1
+while Pereklu4atelcocking555
+{
+sleep 100
+ImageSearch, zFoundXFis, zFoundYFis, zX1Fis, zY1Fis, zX2Fis, zY2Fis, *%OttenokFis%, *%Prozra4nostiFis% data\find3.png
+if ErrorLevel = 0
+	{
+	zoldFoundXFis:=zFoundXFis
+	zoldFoundYFis:=zFoundYFis
+		;=============получить максимальную правую точку SearchVarX1 и SearchVarY1
+		Loop
+		{
+		zFoundXFis+=10
+		ImageSearch, zmaxRightFoundXFis, zmaxRightFoundYFis, zFoundXFis, zY1Fis, zX2Fis, zY2Fis, *%OttenokFis%, *%Prozra4nostiFis% data\find3.png
+			if (zmaxRightFoundXFis != "") and (zmaxRightFoundYFis != "")
+			SearchVarX1:=zmaxRightFoundXFis, SearchVarY1:=zmaxRightFoundYFis
+			if (ErrorLevel = 1 or ErrorLevel = 2)
+			{
+			Break
+			}
+		if !(Pereklu4atelcocking555)
+		Break
+		}
+	;============получено: центр оранжевой полосы готовки
+	fullfound1X:=Round(zoldFoundXFis + (SearchVarX1 - zoldFoundXFis) / 2)
+	fullfound1Y:=Round(zoldFoundYFis + (SearchVarY1 - zoldFoundYFis) / 2)
+	;============Заглушка левой стороны если скрипт поломался
+		if (fullfound1X = 0 or fullfound1Y = 0)
+		{
+		fullfound1X:=zoldFoundXFis
+		fullfound1Y:=zoldFoundYFis
+		}
+	;============Получить пиксель и сравнить его
+	sleep 100
+	PixelGetColor, VColor228, fullfound1X, fullfound1Y
+		Loop
+		{
+		Tooltip Auto coсking: Ждем стрелку,round(A_ScreenWidth * .5 - 50),0,2
+		PixelGetColor, VColor1337, fullfound1X, fullfound1Y
+			if (VColor1337 != VColor228)
+			{
+			TTClickVarX:=round(A_ScreenWidth * (1290 / 2560)), TTClickVarY:=round(A_ScreenHeight * (1300 / 1440))
+			Click, %TTClickVarX%, %TTClickVarY%
+			sleep 1600
+			ZXTTClickVarX:=round(A_ScreenWidth * (1280 / 2560)), ZXTTClickVarY:=round(A_ScreenHeight * (1200 / 1440))
+			Click, %ZXTTClickVarX%, %ZXTTClickVarY%
+			Tooltip,Auto coсking: Поиск кастрюли,round(A_ScreenWidth * .5 - 50),0,2
+			Break
+			}
+		sleep 1
+			if !(Pereklu4atelcocking555)
+			{
+			Tooltip,Auto coсking: Поиск кастрюли,round(A_ScreenWidth * .5 - 50),0,2
+			Break
+			}
+		if !(Pereklu4atelcocking555)
+		Break
+		}
+	
+	}
+		IfWinNotActive, %gameexe1337%
+		{
+		Pereklu4atelcocking555 = 0
+		}
+		if !(Pereklu4atelcocking555)
+		{
+		  SetTimer, metkakli555start, off
+		  Pereklu4atelcocking555 = 0
+		  sleep 100
+		  Tooltip,,0,0,2
+		}
+}
+Return
+
+
+
+;================================================Kaeya voyager
+#UseHook, On
+ffmetkammkli1:
+  SetTimer, ffmetkammstart, off
+  ffPereklu4atelFis1337 = 0
+  sleep 200
+  Tooltip,,0,0,2
+Return
+ffmetkammkli2:
+  SetTimer, ffmetkammstart, on
+  Tooltip Kaeya seafarer: ON,round(A_ScreenWidth * .5 - 50),0,2
+Return
+#UseHook, Off
+ffMyLabel228keya:
+  ffP1ause_=300     ; настройки
+  If not ffSecond1
+  {
+    ffSecond1=1
+    SetTimer, ffFle1DoublePress, -%ffP1ause_%
+  }
+  Else
+  {
+    ffSecond1=0
+    SetTimer, ffmetkammkli2, -1
+  }
+Return
+ffFle1DoublePress:
+  If not ffSecond1
+    Return
+  ffSecond1=0
+  SetTimer, ffmetkammkli1, -1
+Return
+
+ffmetkammstart:
+ffPereklu4atelFis1337 = 1
+SendInput {vk57 down}
+while ffPereklu4atelFis1337
+{
+
+SendInput {vk45}
+sleep 200
+if ScRandomT
+Random, SuperGlobalVarRan,1,15
+	loop 14
+	{
+	sleep 500 + SuperGlobalVarRan
+		IfWinNotActive, %gameexe1337%
+		{
+		ffPereklu4atelFis1337 = 0
+		}
+		if !(ffPereklu4atelFis1337)
+		{
+		  SetTimer, ffmetkammstart, off
+		  ffPereklu4atelFis1337 = 0
+		  sleep 200
+		  Tooltip,,0,0,2
+		SendInput {vk57 Up}
+		Break
+		}
+	}
+
+}
+Return
+
+
+
+
+
+;================================================Mona infinite swimming
+#UseHook, On
+metkammkli1:
+  SetTimer, metkammstart, off
+  Pereklu4atelFis1337 = 0
+  sleep 200
+  Tooltip,,0,0,2
+Return
+metkammkli2:
+  SetTimer, metkammstart, on
+  Tooltip Mona swimming: ON,round(A_ScreenWidth * .5 - 50),0,2
+Return
+#UseHook, Off
+MyLabel228keya:
+  P1ause_=300     ; настройки
+  If not Second1
+  {
+    Second1=1
+    SetTimer, Fle1DoublePress, -%P1ause_%
+  }
+  Else
+  {
+    Second1=0
+    SetTimer, metkammkli2, -1
+  }
+Return
+Fle1DoublePress:
+  If not Second1
+    Return
+  Second1=0
+  SetTimer, metkammkli1, -1
+Return
+
+metkammstart:
+Pereklu4atelFis1337 = 1
+SendInput {vkA0 down}
+while Pereklu4atelFis1337
+{
+SendInput {vk57 down}
+	if ScRandomT
+	Random, SuperGlobalVarRan,1,15
+Sleep 115 + SuperGlobalVarRan
+SendInput {vk57 Up}
+	if ScRandomT
+	Random, SuperGlobalVarRan,1,15
+sleep 20 + SuperGlobalVarRan
+
+IfWinNotActive, %gameexe1337%
+{
+Pereklu4atelFis1337 = 0
+}
+
+if !(Pereklu4atelFis1337)
+{
+  SetTimer, metkammstart, off
+  Pereklu4atelFis1337 = 0
+  sleep 200
+  Tooltip,,0,0,2
+SendInput {vkA0 Up}
+}
+}
+Return
 
 
 ;==================================================Работа с Gui метками
@@ -5285,11 +5997,6 @@ IniWrite, %CheckboxScScHachCh%, data\genConfig.ini, Setings, ScHachCh
 IniWrite, %CheckboxScOverlay%, data\genConfig.ini, Setings, ScOverlay
 IniWrite, %CheckboxScRandomT%, data\genConfig.ini, Setings, ScRandomT
 
-; IniWrite, %CheckboxRegeditCheckBox1%, data\genConfig.ini, Setings, RegeditCheckBox1
-; IniWrite, %CheckboxRegeditCheckBox2%, data\genConfig.ini, Setings, RegeditCheckBox2
-; IniWrite, %CheckboxRegeditCheckBox3%, data\genConfig.ini, Setings, RegeditCheckBox3
-; IniWrite, %CheckboxRegeditCheckBox4%, data\genConfig.ini, Setings, RegeditCheckBox4
-
 IniWrite, %Checkbox0map%, data\genConfig.ini, Setings, Checkbox1map
 IniWrite, %Checkbox0overlay%, data\genConfig.ini, Setings, Checkbox1overlay
 IniWrite, %Checkbox0autowalk%, data\genConfig.ini, Setings, Checkbox1autowalk
@@ -5298,7 +6005,7 @@ IniWrite, %Checkbox0skipNPS%, data\genConfig.ini, Setings, Checkbox1skipNPS
 IniWrite, %Checkbox0autoswim%, data\genConfig.ini, Setings, Checkbox1autoswim
 IniWrite, %Checkbox0vi4ersens%, data\genConfig.ini, Setings, Checkbox1vi4ersens
 IniWrite, %Checkbox0animcancel%, data\genConfig.ini, Setings, Checkbox1animcancel
-; IniWrite, %Checkbox0animcancelLock%, data\genConfig.ini, Setings, Checkbox1animcancelLock
+
 IniWrite, %Checkbox0bhop%, data\genConfig.ini, Setings, Checkbox1bhop
 IniWrite, %Checkbox0bhopDelay%, data\genConfig.ini, Setings, Checkbox1bhopDelay
 
@@ -5414,6 +6121,16 @@ Return
 }
 GuiControl, 99: -Redraw, MyPictureVar1
 GuiControl, 99: ,MyPictureVar1, data\genOverlay%var0ov%.png
+	if (var0ov = 1)
+	{
+	ShowLabTextMyEdit()
+	sleep 1
+	WinSet, Redraw,, ahk_id %hwndGuihamdlewindow%
+	}
+	Else
+	{
+	HideLabTextMyEdit()
+	}
 	if var0ov in %CheckVarKey1PaimonGifList%
 	{
 	GuiControl, 99: show, oIE
@@ -5444,6 +6161,16 @@ Return
 }
 GuiControl, 99: -Redraw, MyPictureVar1
 GuiControl, 99: ,MyPictureVar1, data\genOverlay%var0ov%.png
+	if (var0ov = 1)
+	{
+	ShowLabTextMyEdit()
+	sleep 1
+	WinSet, Redraw,, ahk_id %hwndGuihamdlewindow%
+	}
+	Else
+	{
+	HideLabTextMyEdit()
+	}
 	if var0ov in %CheckVarKey1PaimonGifList%
 	{
 	GuiControl, 99: show, oIE
@@ -5453,12 +6180,110 @@ GuiControl, 99: ,MyPictureVar1, data\genOverlay%var0ov%.png
 	GuiControl, 99: hide, oIE
 	}
 GuiControl, 99: +Redraw, MyPictureVar1
+WinSet, Redraw,, ahk_id %hwndGuihamdlewindow%
 }
 Return
 
 
 
-
+HideLabTextMyEdit()
+{
+GuiControl,99: Hide, LabTextMyEdit
+GuiControl,99: Hide, LabTextMyEdit0
+GuiControl,99: Hide, LabTextMyEdit1
+GuiControl,99: Hide, LabTextMyEdit2
+GuiControl,99: Hide, LabTextMyEdit3
+GuiControl,99: Hide, LabTextMyEdit4
+GuiControl,99: Hide, LabTextMyEdit5
+GuiControl,99: Hide, LabTextMyEdit6
+GuiControl,99: Hide, LabTextMyEdit7
+GuiControl,99: Hide, LabTextMyEdit8
+GuiControl,99: Hide, LabTextMyEdit9
+GuiControl,99: Hide, LabTextMyEdit10
+GuiControl,99: Hide, LabTextMyEdit11
+GuiControl,99: Hide, LabTextMyEdit12
+GuiControl,99: Hide, LabTextMyEdit13
+GuiControl,99: Hide, LabTextMyEdit14
+GuiControl,99: Hide, LabTextMyEdit15
+GuiControl,99: Hide, LabTextMyEdit16
+GuiControl,99: Hide, LabTextMyEdit17
+GuiControl,99: Hide, LabTextMyEdit18
+GuiControl,99: Hide, LabTextMyEdit19
+GuiControl,99: Hide, LabTextMyEdit20
+GuiControl,99: Hide, LabTextMyEdit21
+GuiControl,99: Hide, LabTextMyEdit22
+GuiControl,99: Hide, LabTextMyEdit23
+GuiControl,99: Hide, LabTextMyEdit24
+GuiControl,99: Hide, LabTextMyEdit25
+GuiControl,99: Hide, LabTextMyEdit26
+GuiControl,99: Hide, LabTextMyEdit27
+GuiControl,99: Hide, LabTextMyEdit28
+GuiControl,99: Hide, LabTextMyEdit29
+GuiControl,99: Hide, LabTextMyEdit30
+GuiControl,99: Hide, LabTextMyEdit31
+GuiControl,99: Hide, LabTextMyEdit32
+GuiControl,99: Hide, LabTextMyEdit33
+GuiControl,99: Hide, LabTextMyEdit34
+GuiControl,99: Hide, LabTextMyEdit35
+GuiControl,99: Hide, LabTextMyEdit36
+GuiControl,99: Hide, LabTextMyEdit37
+GuiControl,99: Hide, LabTextMyEdit38
+GuiControl,99: Hide, LabTextMyEdit39
+GuiControl,99: Hide, LabTextMyEdit40
+GuiControl,99: Hide, LabTextMyEdit41
+GuiControl,99: Hide, LabTextMyEdit42
+GuiControl,99: Hide, LabTextMyEdit43
+GuiControl,99: Hide, LabTextMyEdit44
+}
+ShowLabTextMyEdit()
+{
+GuiControl,99: Show, LabTextMyEdit
+GuiControl,99: Show, LabTextMyEdit0
+GuiControl,99: Show, LabTextMyEdit1
+GuiControl,99: Show, LabTextMyEdit2
+GuiControl,99: Show, LabTextMyEdit3
+GuiControl,99: Show, LabTextMyEdit4
+GuiControl,99: Show, LabTextMyEdit5
+GuiControl,99: Show, LabTextMyEdit6
+GuiControl,99: Show, LabTextMyEdit7
+GuiControl,99: Show, LabTextMyEdit8
+GuiControl,99: Show, LabTextMyEdit9
+GuiControl,99: Show, LabTextMyEdit10
+GuiControl,99: Show, LabTextMyEdit11
+GuiControl,99: Show, LabTextMyEdit12
+GuiControl,99: Show, LabTextMyEdit13
+GuiControl,99: Show, LabTextMyEdit14
+GuiControl,99: Show, LabTextMyEdit15
+GuiControl,99: Show, LabTextMyEdit16
+GuiControl,99: Show, LabTextMyEdit17
+GuiControl,99: Show, LabTextMyEdit18
+GuiControl,99: Show, LabTextMyEdit19
+GuiControl,99: Show, LabTextMyEdit20
+GuiControl,99: Show, LabTextMyEdit21
+GuiControl,99: Show, LabTextMyEdit22
+GuiControl,99: Show, LabTextMyEdit23
+GuiControl,99: Show, LabTextMyEdit24
+GuiControl,99: Show, LabTextMyEdit25
+GuiControl,99: Show, LabTextMyEdit26
+GuiControl,99: Show, LabTextMyEdit27
+GuiControl,99: Show, LabTextMyEdit28
+GuiControl,99: Show, LabTextMyEdit29
+GuiControl,99: Show, LabTextMyEdit30
+GuiControl,99: Show, LabTextMyEdit31
+GuiControl,99: Show, LabTextMyEdit32
+GuiControl,99: Show, LabTextMyEdit33
+GuiControl,99: Show, LabTextMyEdit34
+GuiControl,99: Show, LabTextMyEdit35
+GuiControl,99: Show, LabTextMyEdit36
+GuiControl,99: Show, LabTextMyEdit37
+GuiControl,99: Show, LabTextMyEdit38
+GuiControl,99: Show, LabTextMyEdit39
+GuiControl,99: Show, LabTextMyEdit40
+GuiControl,99: Show, LabTextMyEdit41
+GuiControl,99: Show, LabTextMyEdit42
+GuiControl,99: Show, LabTextMyEdit43
+GuiControl,99: Show, LabTextMyEdit44
+}
 
 
 
@@ -5508,7 +6333,7 @@ DoublePress:
 Return
 
 
-;================================================рыбалочка начало петли
+;================================================рыбалочка начало петли. рыбалка
 metka-2-kli2-start:
 Pereklu4atelFis = 1
 while Pereklu4atelFis
@@ -6356,6 +7181,80 @@ IniWrite, %key_LabelANumpad9%, data\genConfig.ini, Binds, key_LabelANumpad9
 	IniRead, key_LabelNumpadAdd, %FileVarImport%, Binds, key_LabelNumpadAdd
 	if !(key_LabelNumpadAdd = "ERROR")
 IniWrite, %key_LabelNumpadAdd%, data\genConfig.ini, Binds, key_LabelNumpadAdd
+	IniRead, key_LabelANumpadAdd, %FileVarImport%, Binds, key_LabelANumpadAdd
+	if !(key_LabelANumpadAdd = "ERROR")
+IniWrite, %key_LabelANumpadAdd%, data\genConfig.ini, Binds, key_LabelANumpadAdd
+
+	IniRead, key_LabelNumpadSub, %FileVarImport%, Binds, key_LabelNumpadSub
+	if !(key_LabelNumpadSub = "ERROR")
+IniWrite, %key_LabelNumpadSub%, data\genConfig.ini, Binds, key_LabelNumpadSub
+
+	IniRead, key_LabelANumpadSub, %FileVarImport%, Binds, key_LabelANumpadSub
+	if !(key_LabelANumpadSub = "ERROR")
+IniWrite, %key_LabelANumpadSub%, data\genConfig.ini, Binds, key_LabelANumpadSub
+
+	IniRead, ExManualMode, %FileVarImport%, Expedition, ExManualMode
+	if !(ExManualMode = "ERROR")
+IniWrite, %ExManualMode%, data\genConfig.ini, Expedition, ExManualMode
+	IniRead, ExMondK1, %FileVarImport%, Expedition, ExMondK1
+	if !(ExMondK1 = "ERROR")
+IniWrite, %ExMondK1%, data\genConfig.ini, Expedition, ExMondK1
+	IniRead, ExMondK2, %FileVarImport%, Expedition, ExMondK2
+	if !(ExMondK2 = "ERROR")
+IniWrite, %ExMondK2%, data\genConfig.ini, Expedition, ExMondK2
+	IniRead, ExMondK3, %FileVarImport%, Expedition, ExMondK3
+	if !(ExMondK3 = "ERROR")
+IniWrite, %ExMondK3%, data\genConfig.ini, Expedition, ExMondK3
+	IniRead, ExMondK4, %FileVarImport%, Expedition, ExMondK4
+	if !(ExMondK4 = "ERROR")
+IniWrite, %ExMondK4%, data\genConfig.ini, Expedition, ExMondK4
+	IniRead, ExMondK5, %FileVarImport%, Expedition, ExMondK5
+	if !(ExMondK5 = "ERROR")
+IniWrite, %ExMondK5%, data\genConfig.ini, Expedition, ExMondK5
+	IniRead, ExMondK6, %FileVarImport%, Expedition, ExMondK6
+	if !(ExMondK6 = "ERROR")
+IniWrite, %ExMondK6%, data\genConfig.ini, Expedition, ExMondK6
+	IniRead, ExLiyK1, %FileVarImport%, Expedition, ExLiyK1
+	if !(ExLiyK1 = "ERROR")
+IniWrite, %ExLiyK1%, data\genConfig.ini, Expedition, ExLiyK1
+	IniRead, ExLiyK2, %FileVarImport%, Expedition, ExLiyK2
+	if !(ExLiyK2 = "ERROR")
+IniWrite, %ExLiyK2%, data\genConfig.ini, Expedition, ExLiyK2
+	IniRead, ExLiyK3, %FileVarImport%, Expedition, ExLiyK3
+	if !(ExLiyK3 = "ERROR")
+IniWrite, %ExLiyK3%, data\genConfig.ini, Expedition, ExLiyK3
+	IniRead, ExLiyK4, %FileVarImport%, Expedition, ExLiyK4
+	if !(ExLiyK4 = "ERROR")
+IniWrite, %ExLiyK4%, data\genConfig.ini, Expedition, ExLiyK4
+	IniRead, ExLiyK5, %FileVarImport%, Expedition, ExLiyK5
+	if !(ExLiyK5 = "ERROR")
+IniWrite, %ExLiyK5%, data\genConfig.ini, Expedition, ExLiyK5
+	IniRead, ExLiyK6, %FileVarImport%, Expedition, ExLiyK6
+	if !(ExLiyK6 = "ERROR")
+IniWrite, %ExLiyK6%, data\genConfig.ini, Expedition, ExLiyK6
+	IniRead, ExInaK1, %FileVarImport%, Expedition, ExInaK1
+	if !(ExInaK1 = "ERROR")
+IniWrite, %ExInaK1%, data\genConfig.ini, Expedition, ExInaK1
+	IniRead, ExInaK2, %FileVarImport%, Expedition, ExInaK2
+	if !(ExInaK2 = "ERROR")
+IniWrite, %ExInaK2%, data\genConfig.ini, Expedition, ExInaK2
+	IniRead, ExInaK3, %FileVarImport%, Expedition, ExInaK3
+	if !(ExInaK3 = "ERROR")
+IniWrite, %ExInaK3%, data\genConfig.ini, Expedition, ExInaK3
+	IniRead, ExInaK4, %FileVarImport%, Expedition, ExInaK4
+	if !(ExInaK4 = "ERROR")
+IniWrite, %ExInaK4%, data\genConfig.ini, Expedition, ExInaK4
+	IniRead, ExInaK5, %FileVarImport%, Expedition, ExInaK5
+	if !(ExInaK5 = "ERROR")
+IniWrite, %ExInaK5%, data\genConfig.ini, Expedition, ExInaK5
+	IniRead, ExInaK6, %FileVarImport%, Expedition, ExInaK6
+	if !(ExInaK6 = "ERROR")
+IniWrite, %ExInaK6%, data\genConfig.ini, Expedition, ExInaK6
+
+	IniRead, TTimerahk1, %FileVarImport%, Setings, TTimerahk1
+	if !(TTimerahk1 = "ERROR")
+IniWrite, %TTimerahk1%, data\genConfig.ini, Setings, TTimerahk1
+
 
 
 FileMoveDir, %A_ScriptDir%\update\GenshinImpact-AHK-flex-main\Genshin AHK\data, %A_ScriptDir%, 1

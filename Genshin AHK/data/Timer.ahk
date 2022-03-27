@@ -7,6 +7,8 @@ SendMode Input
 #singleinstance Ignore 	;Игнорить повторный запуск (проблемы с админским запуском если "Force")
 SetWorkingDir %A_ScriptDir%
 SoundPlay, %A_ScriptDir%\zinecraft_pick_u.wav
+IniRead, TTimerahk1, genConfig.ini, Setings, TTimerahk1
+; MsgBox %TTimerahk1%
 
 timerm := "0"
 timers := "00"
@@ -42,15 +44,7 @@ if(timers < 10)
 	GuiControl, , TText ,  0%timerm%:0%timers%
 else
 	GuiControl, , TText ,  0%timerm%:%timers%
-if(timerm = 4)
-{
-	if tgVar
-	{
-	tgVar = 0
-	SoundPlay, %A_ScriptDir%\zplop.wav
-	}
-}
-if(timerm = 5)
+if(timerm = TTimerahk1)
 {
 	GuiControl, , TText ,  0%timerm%:0%timers%
 	sleep 250

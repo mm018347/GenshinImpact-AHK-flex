@@ -27,6 +27,12 @@ TickCount=1
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 #SingleInstance force
+Process, Priority,, High
+Setbatchlines,-1
+SetKeyDelay,-1, -1
+SetControlDelay, -1
+SetMouseDelay, -1
+SetWinDelay,-1
 Hotkey, *~$%key_Labelkey1%, Labelkey1, on
 If !(A_IsAdmin) 	;Если нет админских прав, то запустить с запросом админки
 {
@@ -75,7 +81,9 @@ Return
 
 
 
-
+*~$End::
+Exitapp
+Return
 
 
 
